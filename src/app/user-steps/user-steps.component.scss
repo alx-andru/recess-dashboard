@@ -1,0 +1,43 @@
+@import '../../scss/colors';
+@import '../../scss/mixins';
+
+.steps-detail {
+  display: block;
+  width: 100%;
+  max-height: 10rem;
+  background-color: $alizarin;
+
+  .steps-detail__chart {
+    display:block;
+    height: 10rem;
+    max-height: 10rem;
+      .highcharts-container {
+
+        height: 10rem;
+        max-height: 10rem;
+      }
+
+
+
+
+  }
+}
+
+
+:host /deep/ {
+  .chart {
+    .ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {
+      stroke: $emerald;
+      stroke-width: 1rem;
+      fill: none;
+    }
+  }
+  .chart3 {
+    .ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {
+      stroke: $alizarin;
+      stroke-width: 1rem;
+      fill: none;
+    }
+  }
+
+}

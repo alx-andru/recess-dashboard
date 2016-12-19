@@ -1,0 +1,65 @@
+@import '../../scss/colors';
+@import '../../scss/mixins';
+
+
+
+.header {
+  @include flex(row);
+  background-color: $recess_base_3;
+  height: 4rem;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.header__logo {
+  font-size: 2rem;
+  font-weight: 900;
+  font-family: 'Lato Medium';
+  color: $recess_font_base_contrast;
+}
+
+.header__actions {
+  text-align: right;
+  @include flex('row');
+  justify-content: flex-end;
+}
+
+.content {
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  flex-grow: 1;
+  @include flex();
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+
+}
+
+.content-users {
+  background-color: $recess_base_3;
+}
+
+.content-users-user {
+  @include flex(row);
+  padding: 0.5rem;
+}
+
+.box {
+  background-color: $recess_primary;
+  height: 10rem;
+  width: 10rem;
+  @include flex;
+
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+
+.box-flex {
+  width: 100%;
+  background-color: $recess_danger;
+}
+
+.content__userlist {
+  width: 100%;
+}

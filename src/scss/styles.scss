@@ -1,0 +1,39 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'colors';
+@import 'mixins';
+
+*,
+*:after,
+*:before {
+  @include box-sizing(border-box);
+  font-family: "-apple-system", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
+  font-variant-ligatures: common-ligatures;
+  line-height: 1.6rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $recess_font_base;
+  //width: 100%;
+
+}
+
+body, html {
+  background-color: $recess_base_1;
+  font-size: 14px;
+  line-height: 1.6rem;
+
+  height: 100%;
+  width: 100%;
+}
+
+.app {
+  @include flex;
+  height: 100%;
+  width: 100%;
+
+  flex: 1 100%;
+}
+
+
+.login {
+  background-color: $sunflower;
+}

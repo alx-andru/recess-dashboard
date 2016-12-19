@@ -18,9 +18,18 @@
       "prefix": "app",
       "mobile": false,
       "styles": [
-        "styles.css"
+        "../node_modules/lato-font/scss/lato-font.scss",
+        "scss/styles.scss",
+        "../node_modules/material-design-icons/iconfont/material-icons.css",
+        "../node_modules/material-design-lite/material.css",
+        "../node_modules/chartist/dist/scss/chartist.scss",
+        "../node_modules/angular-calendar/dist/css/angular-calendar.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/material-design-lite/material.js",
+        "../node_modules/lodash/lodash.js"
+
+      ],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
@@ -28,8 +37,10 @@
       }
     }
   ],
-  "addons": [],
-  "packages": [],
+  "addons": [
+  ],
+  "packages": [
+  ],
   "e2e": {
     "protractor": {
       "config": "./protractor.conf.js"
@@ -41,7 +52,7 @@
     }
   },
   "defaults": {
-    "styleExt": "css",
+    "styleExt": "scss",
     "prefixInterfaces": false,
     "inline": {
       "style": false,

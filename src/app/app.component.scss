@@ -1,0 +1,22 @@
+@import '../scss/colors';
+@import '../scss/mixins';
+
+
+#router-outlet {
+  display: none;
+}
+
+.box {
+  background-color: $recess_primary;
+  height: 10rem;
+  width: 10rem;
+  @include flex;
+
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+
+.box-flex {
+  width: 100%;
+  background-color: $recess_danger;
+}

@@ -1,0 +1,20 @@
+<div class="tile" *ngFor="let user of users | async">
+  <div class="tile-header">
+    <div class="tile-header__title">User: <span>{{user.$key | slice:0:5}}</span></div>
+    <div class="spacer"></div>
+    <div class="tile-header__actions">
+      <i class="material-icons">keyboard_arrow_down</i>
+    </div>
+  </div>
+  <div class="tile-header__content">
+    <app-user-steps-week [steps]="user.steps" [userid]="user.$key"
+                         (selectedDay)="daySelected($event)"></app-user-steps-week>
+    <app-user-steps [steps]="user.steps" [day]="selectedDays[user.$key]"></app-user-steps>
+  </div>
+
+
+</div>
+
+
+
+

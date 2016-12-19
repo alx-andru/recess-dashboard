@@ -1,0 +1,15 @@
+<header class="header">
+  <span class="header__logo">Recess</span>
+  <div class="header__actions">
+    <div>
+      <span (click)="logout()"><i class="material-icons">eject</i></span>
+    </div>
+  </div>
+
+</header>
+
+<div class="content">
+  <app-user-list class="content__userlist" (notify)='onNotify($event)'></app-user-list>
+</div>
+
+

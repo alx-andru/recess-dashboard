@@ -1,0 +1,60 @@
+<svg id="Recess_Logo" data-name="Recess Logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="807" height="451" viewBox="0 0 807 451">
+  <metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 5.6-c138 79.159824, 2016/09/14-01:09:01        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""/>
+   </rdf:RDF>
+</x:xmpmeta>
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                           
+<?xpacket end="w"?></metadata>
+<defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill: #ffcb2b;
+      }
+
+      .cls-1, .cls-2 {
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        filter: url(#filter);
+      }
+    </style>
+    <filter id="filter" x="103.344" y="88.563" width="267.718" height="267.719" filterUnits="userSpaceOnUse">
+      <feFlood result="flood" flood-color="#ffcb2b"/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Gruppe_1" data-name="Gruppe 1">
+    <path id="Form_4" data-name="Form 4" class="cls-1" d="M34.376,106.538H83.085a19.69,19.69,0,0,1,19.69,19.69v14.064a19.69,19.69,0,0,1-19.69,19.69H34.376a19.69,19.69,0,0,1-19.69-19.69V126.228A19.69,19.69,0,0,1,34.376,106.538Z"/>
+    <path id="Form_5" data-name="Form 5" class="cls-1" d="M88.071,176.215l-29.34-28.448,17.012-5.049,15.308,1.048Z"/>
+  </g>
+  <g id="Gruppe_1_Kopie" data-name="Gruppe 1 Kopie">
+    <path id="Form_4_Kopie" data-name="Form 4 Kopie" class="cls-1" d="M755.4,56.086H695.275a24.3,24.3,0,0,0-24.3,24.3V97.749a24.3,24.3,0,0,0,24.3,24.3H755.4a24.3,24.3,0,0,0,24.3-24.3V80.39A24.3,24.3,0,0,0,755.4,56.086Z"/>
+    <path id="Form_5_Kopie" data-name="Form 5 Kopie" class="cls-1" d="M689.121,142.088l36.214-35.113-21-6.232-18.9,1.294Z"/>
+  </g>
+  <path id="Form_3_Kopie" data-name="Form 3 Kopie" class="cls-2" d="M237.2,88.574A133.851,133.851,0,1,1,103.352,222.426,133.852,133.852,0,0,1,237.2,88.574Zm222.2-54.05c115.378,0,208.91,93.532,208.91,208.909s-93.532,208.91-208.91,208.91-208.909-93.532-208.909-208.91S344.021,34.524,459.4,34.524Z"/>
+  <circle id="Form_3" data-name="Form 3" class="cls-3" cx="474.406" cy="222.438" r="208.906"/>
+</svg>
