@@ -1,6 +1,10 @@
 <div class="tile" *ngFor="let user of users | async">
   <div class="tile-header">
-    <div class="tile-header__title">User: <span>{{user.$key | slice:0:5}}</span></div>
+    <div class="tile-header__title">
+      User: <span>{{user.$key | slice:0:5}}</span>
+      Device: <span>{{user.device?.manufacturer }}</span>
+      Model: <span>{{user.device?.model }}</span>
+    </div>
     <div class="spacer"></div>
     <div class="tile-header__actions">
       <i class="material-icons">keyboard_arrow_down</i>

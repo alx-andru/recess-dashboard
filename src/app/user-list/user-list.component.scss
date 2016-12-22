@@ -14,7 +14,10 @@
 }
 
 .tile-header__title {
-  font-weight: 600;
+  span {
+    font-weight: 600;
+  }
+
 }
 
 .tile-header__actions {
