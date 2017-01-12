@@ -1,0 +1,83 @@
+<header class="header">
+  <span class="header__breadcrumb">
+    <i class="material-icons">person</i>
+    <span>Alias: </span>
+    <span class="header-breadcrump__alias">{{ (user | async)?.alias }}</span>
+    <span>&nbsp; Id: </span>
+    <span class="header-breadcrump__id">{{ (user | async)?.uid }}</span>
+
+
+  </span>
+
+  <span class="header__chat" (click)="toggleChat()">
+    <i class="material-icons">forum</i>
+  </span>
+
+</header>
+
+<section class="chat" *ngIf="isChatOpen">
+  <span class="chat__header">
+    <span class="chat__header_item" (click)="deactivateSettings()">Conversation</span>
+    <span class="chat__header_item" (click)="activateSettings()">Settings</span>
+    <div>
+      <i class="material-icons" (click)="toggleChat()">close</i>
+    </div>
+
+  </span>
+
+  <div class="chat__conversation" [hidden]="settingsActive">
+
+    <div class="chat__messages">
+      <div *ngFor="let item of items | async" class="chat-messages__message"
+           [ngClass]="{'chat-messages__message-self': item.uid == id}">
+
+        <div>
+          {{ (user | async)?.alias }} - {{item.timestamp | date:'HH:mm'}}
+        </div>
+        <div class="chat-messages-message__item">
+          <div class="chat-messages-message__bubble">{{item.text}}</div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat__inputfield">
+      <div class="chat-inputfield__text">
+        <label class="chat-inputfield-text__label" for="{{conversation.uid}}">{{ (user | async)?.alias }}</label>
+        <input class="chat-inputfield-text__input" type="text" id="{{conversation.uid}}" placeholder="message..."
+               [(ngModel)]="chattext">
+      </div>
+      <div class="chat-inputfield__submit">
+        <i class="material-icons" (click)="sendMessage()">send</i>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat__settings" [hidden]="!settingsActive">
+    <div class="chat__settings--info">
+      <span class="chat-settings__userhighlight">{{ (user | async)?.alias }}</span>
+      <i class="material-icons">swap_horiz</i>
+      <span class="chat-settings__userhighlight">{{conversation.alias}}</span>
+    </div>
+    <div class="chat-settings__userlist">
+      <div *ngFor="let user of users | async" class="chat-settings-userlist__user"
+           [ngClass]="{'chat-settings-userlist__user--active': user.user.uid === conversation.uid}">
+        <input type="radio" id="chatwith-{{user.user.uid}}" name="selector"
+               [checked]="user.user.uid === conversation.uid"
+               (change)="onSelectionChange(user.user.uid)">
+        <label for="chatwith-{{user.user.uid}}">{{user.user.alias}}</label>
+      </div>
+    </div>
+  </div>
+
+
+</section>
+
+<div class="content">
+  <div class="content__tile">
+    <i class="material-icons">show_chart</i>
+  </div>
+</div>
+
+
+

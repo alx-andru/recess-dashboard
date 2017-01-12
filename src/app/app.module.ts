@@ -21,6 +21,8 @@ import {UserStepsWeekComponent} from './user-steps-week/user-steps-week.componen
 
 import { ChartModule } from 'angular2-highcharts';
 import {MomentModule} from 'angular2-moment';
+import { UserDetailComponent } from './user-detail/user-detail.component';
+import { UserChatComponent } from './user-chat/user-chat.component';
 
 var firebaseConfig = require('./firebase.json');
 
@@ -36,6 +38,8 @@ var firebaseConfig = require('./firebase.json');
     HomeComponent,
     UserStepsComponent,
     UserStepsWeekComponent,
+    UserDetailComponent,
+    UserChatComponent,
 
   ],
   imports: [

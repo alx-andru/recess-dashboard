@@ -1,40 +1,78 @@
 @import '../../scss/colors';
 @import '../../scss/mixins';
 
-
-
-.header {
-  @include flex(row);
-  background-color: $recess_base_3;
-  height: 4rem;
-  align-items: center;
-  padding: 0 2rem;
+.dashboard {
+  height: 100%;
+  @include flex('row');
 }
 
-.header__logo {
+
+
+.sidebar {
+  background-color: $recess_base_contrast_1;
+  color: $recess_font_base;
+  height: 100%;
+  width: 20rem;
+  min-width: 20rem;
+  max-width: 20rem;
+  overflow-y: scroll;
+
+
+}
+
+.sidebar__header {
+  //background-color: $primary_recess;
+  height: 4rem;
+  padding: 1rem 2rem;
+
+  a {
+    text-decoration: none;
+  }
+
+}
+
+.sidebar__header__logo {
   font-size: 2rem;
   font-weight: 900;
   font-family: 'Lato Medium';
-  color: $recess_font_base_contrast;
-}
+  text-align: center;
 
-.header__actions {
-  text-align: right;
   @include flex('row');
-  justify-content: flex-end;
-}
-
-.content {
-  height: 100%;
-  width: 100%;
-  padding: 1rem;
-  flex-grow: 1;
-  @include flex();
   justify-content: flex-start;
-  align-items: flex-start;
-  flex-wrap: wrap;
 
+  img {
+    height: 2rem;
+    padding-right: 1rem;
+  }
+  span {
+    color: $recess_base_3;
+    &.dot {
+      color: $primary_recess;
+    }
+  }
 }
+
+.sidebar__title {
+  padding: 0 2rem;
+  @include flex('row');
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+  i {
+    padding-right: 0.5rem;
+  }
+}
+
+.context {
+  @include flex();
+  width: 100%;
+  height: 100%;
+  justify-content: flex-start;
+  min-width: 60rem;
+  overflow: hidden;
+}
+
+
+
 
 .content-users {
   background-color: $recess_base_3;

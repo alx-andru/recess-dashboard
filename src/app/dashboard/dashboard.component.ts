@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
+import {Routes} from '@angular/router';
 import {AngularFire, AuthProviders} from 'angularfire2';
+
+
 
 @Component({
   selector: 'app-dashboard',

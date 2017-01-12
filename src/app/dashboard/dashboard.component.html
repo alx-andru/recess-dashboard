@@ -1,15 +1,30 @@
-<header class="header">
-  <span class="header__logo">Recess</span>
-  <div class="header__actions">
-    <div>
-      <span (click)="logout()"><i class="material-icons">eject</i></span>
-    </div>
-  </div>
+<div class="dashboard">
+  <section class="sidebar">
+    <header class="sidebar__header">
+      <a [routerLink]="['/dashboard']">
+        <span class="sidebar__header__logo">
+          <img src="assets/recess-white.png"/>
+          <span>Recess</span><span class="dot">.</span>
+        </span>
+      </a>
 
-</header>
+    </header>
+    <span class="sidebar__title">
+      <i class="material-icons">group</i>
+      Participants
+    </span>
+    <app-user-list class="content__userlist" (notify)='onNotify($event)'></app-user-list>
+  </section>
 
-<div class="content">
-  <app-user-list class="content__userlist" (notify)='onNotify($event)'></app-user-list>
+  <section class="context">
+
+    <router-outlet></router-outlet>
+
+  </section>
+
+
 </div>
+
+
 
 

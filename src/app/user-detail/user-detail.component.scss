@@ -1,0 +1,248 @@
+@import '../../scss/colors';
+@import '../../scss/mixins';
+
+:host {
+  width: 100%;
+  height: 100%;
+}
+
+.header {
+  position: relative;
+
+  @include flex('row');
+  background-color: $recess_base_3;
+  height: 4rem;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  top: 0;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.header__breadcrumb {
+  @include flex('row');
+  align-items: center;
+  i {
+    padding: 0 0.5rem;
+  }
+}
+
+.header-breadcrump__id {
+  font-weight: 400;
+  padding-left: 0.5rem;
+}
+
+.header-breadcrump__alias {
+  font-weight: 900;
+  padding-left: 0.5rem;
+}
+
+.header__chat {
+  @include flex('row');
+  cursor: pointer;
+  justify-self: flex-end;
+  align-items: center;
+  i {
+
+    color: $recess_base_contrast_1;
+  }
+
+}
+
+.header__actions {
+  text-align: right;
+  @include flex('row');
+  justify-content: flex-end;
+}
+
+.chat {
+  width: 20rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  background-color: $recess_base_3;
+  @include flex();
+  justify-content: flex-start;
+  box-shadow: 0 0 9px rgba(191, 191, 191, 0.36);
+  border-left: 1px solid rgba(222, 227, 231, 0.56);
+}
+
+.chat__header {
+  height: 4rem;
+  width: 100%;
+  min-height: 4rem;
+  background-color: $recess_base_3;
+  * {
+    cursor: pointer;
+  }
+
+  @include flex('row');
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 2rem;
+  padding-left: 1rem;
+  i {
+    font-size: 0.9rem;
+    font-weight: 900;
+    padding-left: 0.5rem;
+  }
+
+}
+
+.chat__header_item {
+  border-bottom: 0.25rem solid $recess_base_contrast_1;
+}
+
+.chat__conversation {
+  height: 100%;
+  width: 100%;
+  @include flex();
+  justify-content: flex-start;
+}
+
+.chat__messages {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  padding: 1rem;
+  @include flex();
+  justify-content: flex-start;
+}
+
+.chat__inputfield {
+  border-top: 1px solid rgba(222, 227, 231, 0.56);
+  width: 100%;
+  justify-self: flex-end;
+  padding: 1rem 0;
+}
+
+.chat-messages__message {
+  margin-bottom: 0.25rem;
+  width: 100%;
+  //@include flex();
+  max-height: 100%;
+  //height: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-left: 0.25rem solid $recess_base_1;
+  padding-left: 1rem;
+  padding-bottom: 0.25rem;
+  //flex: 1;
+}
+
+.chat-messages__message-self {
+  border-color: $primary_recess;
+  .chat-messages-message__bubble {
+    background-color: $primary_recess;
+  }
+}
+
+.chat-messages-message__item {
+
+  @include flex('row');
+  align-self: flex-start;
+  justify-self: flex-start;
+
+  align-items: flex-start;
+}
+
+.chat-messages-message__bubble {
+
+  background-color: $recess_base_1;
+  padding: 0.25rem;
+  @include border-radius(0.25rem);
+}
+
+.chat__settings {
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.chat-settings__userlist {
+  height: 100%;
+  overflow-y: scroll;
+  width: 100%;
+  text-align: left;
+}
+
+.chat-settings__userhighlight {
+  font-weight: 600;
+  padding: 0 0.25rem;
+}
+
+.chat__inputfield {
+  @include flex('row');
+}
+
+.chat-inputfield__text {
+  width: 100%;
+  @include flex('row');
+}
+
+.chat__settings--info {
+  @include flex('row');
+  margin-bottom: 1rem;
+}
+
+.chat-settings-userlist__user--active {
+
+  input {
+    border-radius: 4px;
+    border-color: $primary_recess;
+    opacity: 0;
+    width: 0;
+    height: 0;
+
+  }
+  label {
+    font-weight: 600;
+    margin-left: 1rem;
+    &:before {
+
+      content: "";
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+
+      //margin-right: 1rem;
+      position: absolute;
+      margin-top: 0.25rem;
+      left: 1.125rem;
+      background-color: $primary_recess;
+      border: 1px solid $primary_recess;
+      @include border-radius(1rem);
+    }
+
+  }
+}
+
+.chat-inputfield-text__label {
+  padding: 0 0.25rem;
+}
+
+.chat-inputfield-text__input {
+  flex: 1;
+}
+
+.content {
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  flex-grow: 1;
+  @include flex();
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+
+}
+
+.content__tile {
+  background-color: $recess_base_2;
+  width: 10rem;
+  height: 10rem;
+  @include flex('row');
+  justify-content: space-around;
+}
