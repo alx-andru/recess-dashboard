@@ -24,8 +24,14 @@ import {MomentModule} from 'angular2-moment';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { UserChatComponent } from './user-chat/user-chat.component';
 
-var firebaseConfig = require('./firebase.json');
-
+//var firebaseConfig = require('./firebase.json');
+const firebaseConfig = {
+  "apiKey": "AIzaSyAHfTGyRQgRgeumLCvn2zlez5cL_tfKz2k",
+  "authDomain": "recess-app-008.firebaseapp.com",
+  "databaseURL": "https://recess-app-008.firebaseio.com",
+  "storageBucket": "recess-app-008.appspot.com",
+  "messagingSenderId": "105024553958"
+};
 
 
 @NgModule({

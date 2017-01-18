@@ -32,7 +32,7 @@
            [ngClass]="{'chat-messages__message-self': item.uid == id}">
 
         <div>
-          {{ (user | async)?.alias }} - {{item.timestamp | date:'HH:mm'}}
+          {{ item?.alias || item.uid }} - {{item.timestamp | date:'HH:mm'}}
         </div>
         <div class="chat-messages-message__item">
           <div class="chat-messages-message__bubble">{{item.text}}</div>
@@ -42,23 +42,28 @@
     </div>
 
     <div class="chat__inputfield">
+
       <div class="chat-inputfield__text">
-        <label class="chat-inputfield-text__label" for="{{conversation.uid}}">{{ (user | async)?.alias }}</label>
+        <label class="chat-inputfield-text__label" for="{{conversation.uid}}">{{ conversation.alias }}</label>
         <input class="chat-inputfield-text__input" type="text" id="{{conversation.uid}}" placeholder="message..."
                [(ngModel)]="chattext">
       </div>
+
       <div class="chat-inputfield__submit">
         <i class="material-icons" (click)="sendMessage()">send</i>
       </div>
+
     </div>
   </div>
 
   <div class="chat__settings" [hidden]="!settingsActive">
+
     <div class="chat__settings--info">
       <span class="chat-settings__userhighlight">{{ (user | async)?.alias }}</span>
       <i class="material-icons">swap_horiz</i>
       <span class="chat-settings__userhighlight">{{conversation.alias}}</span>
     </div>
+
     <div class="chat-settings__userlist">
       <div *ngFor="let user of users | async" class="chat-settings-userlist__user"
            [ngClass]="{'chat-settings-userlist__user--active': user.user.uid === conversation.uid}">

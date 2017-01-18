@@ -1,6 +1,6 @@
 import {ModuleWithProviders}  from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-
+import {HomeComponent} from './home/home.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {LoginComponent} from './login/login.component';
 import {UserDetailComponent} from './user-detail/user-detail.component';
@@ -21,25 +21,26 @@ export const routes: Routes = [
    ]
    },
    */
-
+  {
+    path: '',
+    redirectTo: '/dashboard',
+    //component: HomeComponent,
+    pathMatch: 'full'
+  },
 
   {
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: 'user/:id', component: UserDetailComponent },
+      {path: 'user/:id', component: UserDetailComponent},
     ]
   },
   {
     path: 'login',
     component: LoginComponent
   },
-  {
-    path: '',
-    redirectTo: '/dashboard',
-    pathMatch: 'full'
-  },
+
 
 ];
 

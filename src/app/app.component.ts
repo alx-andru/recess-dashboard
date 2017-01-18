@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 
-import {FirebaseAuth,} from 'angularfire2';
+import {AngularFireAuth} from 'angularfire2';
 
 
 @Component({
@@ -16,7 +16,8 @@ export class AppComponent {
   public page: string = 'test page';
   public isLogin: boolean = false;
 
-  constructor(private auth: FirebaseAuth, private router: Router) {
+  constructor(private auth: AngularFireAuth, private router: Router) {
+    /*
     this.auth.subscribe(user => {
       if (user) {
         // go to home page
@@ -27,6 +28,7 @@ export class AppComponent {
         console.log('logout');
       }
     });
+    */
   }
 
   onNotify(message: any): void {

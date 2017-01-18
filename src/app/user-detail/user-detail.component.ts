@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {AngularFire, FirebaseListObservable} from 'angularfire2';
+import * as moment from 'moment';
 
 
 @Component({
@@ -47,7 +48,6 @@ export class UserDetailComponent implements OnInit {
         if (snapshots.length == 1) {
           let conversationUid = snapshots[0].uid;
 
-
           this.conversation = {
             uid: conversationUid,
             alias: '',
@@ -88,8 +88,9 @@ export class UserDetailComponent implements OnInit {
   sendMessage = function () {
     this.items.push({
       text: '' + this.chattext,
-      uid: this.conversationUid,
-      time: 'teste',
+
+      uid: this.conversation.uid,
+      time: moment().toJSON(),
     });
   };
 
