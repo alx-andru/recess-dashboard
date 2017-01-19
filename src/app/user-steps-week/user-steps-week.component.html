@@ -1,27 +1,6 @@
 <div class="weekview">
-  <div class="week">
-    <div class="week__navigation">
-      <span class="material-icons week-navigation__before" (click)="prevMonth()">navigate_before</span>
-      <span class="week-navigation__month">{{day| amDateFormat:'MMMM YYYY'}}</span>
-      <span class="material-icons week-navigation__next" (click)="nextMonth()">navigate_next</span>
-    </div>
-    <div class="week__weekdays">
-      <span>Sun</span>
-      <span>Mon</span>
-      <span>Tue</span>
-      <span>Wed</span>
-      <span>Thu</span>
-      <span>Fri</span>
-      <span>Sat</span>
-    </div>
-    <div class="week__days">
-      <div *ngFor="let day of days" [ngClass]="day.classes" (click)="dateSelected(day.date)">
-        {{day.date | amDateFormat:'DD'}}
-      </div>
-    </div>
-  </div>
 
-  <!--<x-chartist class="chart" [data]="data" [type]="type" [options]="options"></x-chartist>-->
+
   <div class="chart">
     <chart class="chart__detail" [options]="options" (load)="saveInstance($event.context)"></chart>
   </div>

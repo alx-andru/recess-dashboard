@@ -29,7 +29,10 @@ export class UserStepsWeekComponent implements OnInit {
     this.options = {
 
       chart: {
-        type: 'column'
+        type: 'column',
+        plotBackgroundColor: null,
+        backgroundColor: '#f1f3f3',
+
       },
 
       title: {
@@ -58,6 +61,7 @@ export class UserStepsWeekComponent implements OnInit {
         min: 0,
         max: 15000,
         allowDecimals: false,
+        visible: false,
         title: {
           text: 'Steps'
         }
@@ -110,22 +114,24 @@ export class UserStepsWeekComponent implements OnInit {
   }
 
 
-  /*
-   {
-   name: 'John',
-   data: [5, 3, 4, 7, 2]
-   }, {
-   name: 'Jane',
-   data: [2, 2, 3, 2, 1]
-   }, {
-   name: 'Joe',
-   data: [3, 4, 4, 2, 5]
-   }
-   */
 
   ngOnChanges(changes: any) {
-    console.log(changes);
-    this.generateWeekSteps();
+    for (let propName in changes) {
+      let chng = changes[propName];
+      let cur = JSON.stringify(chng.currentValue);
+      let prev = JSON.stringify(chng.previousValue);
+
+
+      if (propName == 'steps' && (Object.keys(chng.previousValue).length > 0 && chng.previousValue.constructor === Object)) {
+        this.steps = chng.currentValue;
+        this.dateSelected(moment().startOf('day'));
+        //console.log(`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+      }
+      if (propName == 'userid' && chng.previousValue !== {}) {
+        this.userid = chng.currentValue;
+      }
+    }
+
   }
 
   ngOnInit() {
@@ -258,17 +264,19 @@ export class UserStepsWeekComponent implements OnInit {
       date: date
     });
     this.day = date;
-    this.generateMonth();
+    //this.generateMonth();
     this.generateWeekSteps();
+    if (this.chart !== undefined) {
+      var seriesLength = this.chart.series.length;
+      for (var i = seriesLength - 1; i > -1; i--) {
+        this.chart.series[i].remove();
+      }
 
-    var seriesLength = this.chart.series.length;
-    for (var i = seriesLength - 1; i > -1; i--) {
-      this.chart.series[i].remove();
+      for (let series in this.series) {
+        this.chart.addSeries(this.series[series]);
+      }
     }
 
-    for (let series in this.series) {
-      this.chart.addSeries(this.series[series]);
-    }
 
   }
 

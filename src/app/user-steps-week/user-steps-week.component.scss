@@ -59,7 +59,7 @@
 }
 
 .inactive {
-  color: $recess_base_2;
+  //color: $recess_base_2;
 }
 
 .today {
@@ -72,7 +72,7 @@
   width: 20rem;
   height: 14rem;
 
-  background-color: $alizarin;
+  //background-color: $alizarin;
 
 }
 
@@ -100,3 +100,6 @@
 }
 
 
+.highcharts-axis-line {
+  stroke: red;
+}

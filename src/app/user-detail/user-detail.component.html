@@ -79,8 +79,92 @@
 </section>
 
 <div class="content">
-  <div class="content__tile">
-    <i class="material-icons">show_chart</i>
+
+  <div class="content__tile content__tile--20">
+    <header class="content-tile__header">
+      <div class="content-tile-header__title">
+        User Info
+      </div>
+    </header>
+    <section class="content-tile__content">
+      <div class="content-tile-content__checkbox">
+        <span>Chat enabled</span>
+        <label class="switch green"><input type="checkbox" [ngModel]="(config | async)?.chat.isActive"
+                                           (change)="toggleChatActive($event)"><i></i></label>
+      </div>
+
+      <div class="content-tile-content__text">
+        <span>Created at</span>
+        <span class="content-tile-content-text--value">{{ (user | async)?.timestamp | date:'medium'}}</span>
+      </div>
+
+      <div class="content-tile-content__text">
+        <span>Group</span>
+        <span class="content-tile-content-text--value">{{ (user | async)?.group }}</span>
+      </div>
+
+      <div class="content-tile-content__text">
+        <span>Type</span>
+        <span class="content-tile-content-text--value">{{ (user | async)?.type }}</span>
+      </div>
+
+      <div class="content-tile-content__text">
+        <span>Push Notification token</span>
+        <span title="{{(user | async)?.pushToken}}" class="content-tile-content-text--value">{{ (user | async)?.pushToken | slice:0:5 }}</span>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="content__tile content__tile--20">
+    <header class="content-tile__header">
+      <div class="content-tile-header__title">
+        Device Info
+      </div>
+    </header>
+    <section class="content-tile__content">
+      <div class="content-tile-content__text">
+        <span>Recess App Version</span>
+        <span class="content-tile-content-text--value">{{ (device | async)?.appVersion }}</span>
+      </div>
+      <div class="content-tile-content__text">
+        <span>Manufacturer</span>
+        <span class="content-tile-content-text--value">{{ (device | async)?.manufacturer }}</span>
+      </div>
+
+      <div class="content-tile-content__text">
+        <span>Model</span>
+        <span class="content-tile-content-text--value">{{ (device | async)?.model }}</span>
+      </div>
+
+      <div class="content-tile-content__text">
+        <span>Platform</span>
+        <span class="content-tile-content-text--value">{{ (device | async)?.platform }}</span>
+      </div>
+
+      <div class="content-tile-content__text">
+        <span>Platform version</span>
+        <span class="content-tile-content-text--value">{{ (device | async)?.version }}</span>
+      </div>
+
+
+    </section>
+
+  </div>
+
+
+  <div class="content__tile content__tile--20">
+    <header class="content-tile__header">
+      <div class="content-tile-header__title">
+        Steps this week
+      </div>
+    </header>
+    <section class="content-tile__content">
+      <app-user-steps-week [steps]=" (steps | async) " [userid]=" (user | async)?.uid "></app-user-steps-week>
+
+    </section>
+
   </div>
 </div>
 
