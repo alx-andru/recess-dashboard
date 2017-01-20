@@ -23,7 +23,7 @@ export class UserDetailComponent implements OnInit {
   config: any;
   device: any;
   steps: any;
-  selectedDays:any;
+  selectedDays: any;
   conversationIds: FirebaseListObservable<any[]>;
   conversation: any;
   chattext: string;
@@ -41,42 +41,9 @@ export class UserDetailComponent implements OnInit {
 
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
-      this.id = params['id']; // (+) converts string 'id' to a number
-      this.conversationIds = this.af.database.list(`/users/${this.id}/config/conversation`);
-
-      this.user = this.af.database.object(`/users/${this.id}/user`);
-      this.config = this.af.database.object(`/users/${this.id}/config`);
-      this.device = this.af.database.object(`/users/${this.id}/device`);
-      this.steps = this.af.database.object(`/users/${this.id}/steps`);
-
-    });
-
-    this.af.database.list(`/users/${this.id}/config/conversation/`, {
-      query: {
-        limitToLast: 1,
-      }
-    }).subscribe(snapshots => {
-      if (snapshots.length == 1) {
-        let conversationUid = snapshots[0].uid;
-
-        this.conversation = {
-          uid: conversationUid,
-          alias: '',
-        };
-        this.af.database.object(`/users/${conversationUid}/user/alias`).subscribe(snapshot => {
-          this.conversation.alias = snapshot.$value;
-        });
-
-        this.items = this.af.database.list(`/users/${this.conversation.uid}/conversation`);
-
-
-      }
-
-    });
+    this.initializeChatValues();
 
   }
-
 
 
   toggleChatActive = function (e) {
@@ -85,6 +52,7 @@ export class UserDetailComponent implements OnInit {
         isActive: e.target.checked
       }
     });
+    this.initializeChatValues();
   };
 
   toggleChat = function () {
@@ -103,7 +71,7 @@ export class UserDetailComponent implements OnInit {
     console.log(uid);
     this.conversationIds.push({
       uid: uid,
-      timestamp: 'teste',
+      timestamp: moment().toJSON(),
     });
   };
 
@@ -115,5 +83,42 @@ export class UserDetailComponent implements OnInit {
       time: moment().toJSON(),
     });
   };
+
+  private initializeChatValues() {
+    this.sub = this.route.params.subscribe(params => {
+      this.id = params['id']; // (+) converts string 'id' to a number
+      this.conversationIds = this.af.database.list(`/users/${this.id}/config/conversation`);
+
+      this.user = this.af.database.object(`/users/${this.id}/user`);
+      this.config = this.af.database.object(`/users/${this.id}/config`);
+      this.device = this.af.database.object(`/users/${this.id}/device`);
+      this.steps = this.af.database.object(`/users/${this.id}/steps`);
+
+
+      this.af.database.list(`/users/${this.id}/config/conversation/`, {
+        query: {
+          limitToLast: 1,
+        }
+      }).subscribe(snapshots => {
+        if (snapshots.length == 1) {
+          let conversationUid = snapshots[0].uid;
+
+          this.conversation = {
+            uid: conversationUid,
+            alias: '',
+          };
+          this.af.database.object(`/users/${conversationUid}/user/alias`).subscribe(snapshot => {
+            this.conversation.alias = snapshot.$value;
+          });
+
+          this.items = this.af.database.list(`/users/${this.conversation.uid}/conversation`);
+
+
+        }
+
+      });
+
+    });
+  }
 
 }

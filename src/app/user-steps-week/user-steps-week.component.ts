@@ -230,7 +230,7 @@ export class UserStepsWeekComponent implements OnInit {
           }
 
         }
-        console.log('Day: ' + dateFormated);
+        //console.log('Day: ' + dateFormated);
         //this.data.labels.push(date);
         //console.log(sources)
       }
@@ -238,7 +238,7 @@ export class UserStepsWeekComponent implements OnInit {
 
     this.series = [];
     for (let source in sources) {
-      console.log(sources[source]);
+      //console.log(sources[source]);
       let name = 'default';
       if (source.indexOf('health') > 0) {
         name = 'HealthKit';
