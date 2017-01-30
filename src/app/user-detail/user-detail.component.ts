@@ -10,16 +10,27 @@ import * as moment from 'moment';
   styleUrls: ['./user-detail.component.scss']
 })
 export class UserDetailComponent implements OnInit {
+  get onSelectionChangeBot(): (bid) => any {
+    return this._onSelectionChangeBot;
+  }
+
+  set onSelectionChangeBot(value: (bid) => any) {
+    this._onSelectionChangeBot = value;
+  }
 
   id: number;
+  bid: string;
   private sub: any;
   isChatOpen: boolean;
   items: FirebaseListObservable<any[]>;
   af: any;
   settingsActive: boolean;
-  users: any;
+  users: FirebaseListObservable<any[]>;
+  bots: FirebaseListObservable<any[]>;
 
   user: any;
+
+
   config: any;
   device: any;
   steps: any;
@@ -31,6 +42,7 @@ export class UserDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute, af: AngularFire) {
     this.af = af;
     this.users = af.database.list('/users');
+    this.bots = af.database.list('/bots');
 
     this.isChatOpen = false;
     this.settingsActive = false;
@@ -71,8 +83,34 @@ export class UserDetailComponent implements OnInit {
     console.log(uid);
     this.conversationIds.push({
       uid: uid,
+      type: 'participant',
       timestamp: moment().toJSON(),
     });
+
+    //remove from bots
+    let selectedbot = this.af.database.object(`/bots/${this.bid}/users/${this.id}`);
+    selectedbot.remove();
+  };
+
+  private _onSelectionChangeBot = function (bid) {
+
+    console.log('bid: ' + bid);
+    this.bid = bid;
+
+    this.conversationIds.push({
+      uid: this.bid,
+      type: 'bot',
+      timestamp: moment().toJSON(),
+    });
+
+    // add userid to botlist
+
+    let selectedBotUsers = this.af.database.object(`/bots/${this.bid}/users/${this.id}`);
+
+    selectedBotUsers.set({
+      timestamp: moment().toJSON(),
+    })
+
   };
 
   sendMessage = function () {
@@ -85,6 +123,7 @@ export class UserDetailComponent implements OnInit {
   };
 
   private initializeChatValues() {
+
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id']; // (+) converts string 'id' to a number
       this.conversationIds = this.af.database.list(`/users/${this.id}/config/conversation`);
@@ -93,7 +132,6 @@ export class UserDetailComponent implements OnInit {
       this.config = this.af.database.object(`/users/${this.id}/config`);
       this.device = this.af.database.object(`/users/${this.id}/device`);
       this.steps = this.af.database.object(`/users/${this.id}/steps`);
-
 
       this.af.database.list(`/users/${this.id}/config/conversation/`, {
         query: {
@@ -106,12 +144,24 @@ export class UserDetailComponent implements OnInit {
           this.conversation = {
             uid: conversationUid,
             alias: '',
+            type: snapshots[0].type,
           };
+
+
           this.af.database.object(`/users/${conversationUid}/user/alias`).subscribe(snapshot => {
             this.conversation.alias = snapshot.$value;
           });
 
-          this.items = this.af.database.list(`/users/${this.conversation.uid}/conversation`);
+          if (snapshots[0].type == 'bot') {
+
+            // bot always listens to conversation in own channel
+            this.items = this.af.database.list(`/users/${this.id}/conversation`);
+            this.af.database.object(`/bots/${conversationUid}/bot/alias`).subscribe(snapshot => {
+              this.conversation.alias = snapshot.$value;
+            });
+          } else {
+            this.items = this.af.database.list(`/users/${this.conversation.uid}/conversation`);
+          }
 
 
         }

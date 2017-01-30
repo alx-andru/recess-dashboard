@@ -4,6 +4,7 @@ import {HomeComponent} from './home/home.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {LoginComponent} from './login/login.component';
 import {UserDetailComponent} from './user-detail/user-detail.component';
+import {BotDetailComponent} from './bot-detail/bot-detail.component';
 
 
 import {AuthGuard} from './AuthGuard';
@@ -34,6 +35,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {path: 'user/:id', component: UserDetailComponent},
+      {path: 'bot/:id', component: BotDetailComponent},
     ]
   },
   {

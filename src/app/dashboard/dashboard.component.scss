@@ -52,16 +52,6 @@
   }
 }
 
-.sidebar__title {
-  padding: 0 2rem;
-  @include flex('row');
-  justify-content: flex-start;
-  margin-bottom: 1rem;
-  i {
-    padding-right: 0.5rem;
-  }
-}
-
 .context {
   @include flex();
   width: 100%;

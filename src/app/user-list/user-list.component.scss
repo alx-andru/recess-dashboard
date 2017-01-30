@@ -1,6 +1,18 @@
 @import '../../scss/colors';
 @import '../../scss/mixins';
 
+
+.sidebar__title {
+  padding: 0 2rem;
+  @include flex('row');
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+  i {
+    padding-right: 0.5rem;
+  }
+}
+
+
 .tile {
   background-color: $recess_base_contrast_2;
   padding: 1rem;

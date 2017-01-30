@@ -1,0 +1,62 @@
+<header class="header">
+  <span class="header__breadcrumb">
+    <i class="material-icons">android</i>
+    <span>Alias: </span>
+    <span class="header-breadcrump__alias">{{(bot | async)?.alias || "N/A" }}</span>
+    <span>&nbsp; Type: </span>
+    <span class="header-breadcrump__id">{{(bot | async)?.type || "N/A" }}</span>
+
+
+  </span>
+
+
+
+</header>
+
+
+<div class="content">
+
+  <div class="content__tile content__tile--20">
+    <header class="content-tile__header">
+      <div class="content-tile-header__title">
+        Bot Info
+      </div>
+    </header>
+    <section class="content-tile__content">
+
+      <div class="content-tile-content__text">
+        <span>Created at</span>
+        <span class="content-tile-content-text--value">{{ (bot | async)?.timestamp | date:'medium'}}</span>
+      </div>
+
+
+    </section>
+
+  </div>
+
+  <div class="content__tile content__tile--40">
+    <header class="content-tile__header">
+      <div class="content-tile-header__title">
+        Active users
+      </div>
+    </header>
+    <section class="content-tile__content">
+
+      <div class="content-tile-content__text">
+        <div *ngFor="let user of users | async" class="content-tile-content-text__user">
+          <div>{{user.$key}} - {{user.timestamp | date:'medium'}}</div>
+        </div>
+      </div>
+
+
+    </section>
+
+  </div>
+
+
+
+
+</div>
+
+
+

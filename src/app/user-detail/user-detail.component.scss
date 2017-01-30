@@ -57,6 +57,9 @@
   justify-content: flex-end;
 }
 
+
+
+
 .chat {
   width: 20rem;
   position: absolute;
@@ -172,6 +175,10 @@
 .chat-settings__userhighlight {
   font-weight: 600;
   padding: 0 0.25rem;
+  i {
+    font-size: 0.9rem;
+    padding-right: 0.5rem;
+  }
 }
 
 .chat__inputfield {

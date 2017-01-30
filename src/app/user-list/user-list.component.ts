@@ -1,6 +1,6 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {AngularFire, FirebaseListObservable} from 'angularfire2';
-import {Router,ActivatedRoute} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import * as moment from 'moment';
 
 @Component({
@@ -10,21 +10,18 @@ import * as moment from 'moment';
 })
 export class UserListComponent implements OnInit {
   users: FirebaseListObservable<any[]>;
+  bots: FirebaseListObservable<any[]>;
 
   selectedDays: any;
   selectedUser: string;
 
   constructor(af: AngularFire, private router: Router,) {
     this.users = af.database.list('/users');
+    this.bots = af.database.list('/bots');
     this.selectedDays = {};
   }
 
   ngOnInit() {
-    for (let user in this.users) {
-      //this.selectedDays[this.users[user].uid] = moment();
-    }
-
-
 
   }
 
@@ -37,6 +34,11 @@ export class UserListComponent implements OnInit {
   userDetails(uid) {
     this.selectedUser = uid;
     this.router.navigate(['/dashboard/user', uid]);
+  }
+
+  botDetails(uid) {
+    this.selectedUser = uid;
+    this.router.navigate(['/dashboard/bot', uid]);
   }
 
 

@@ -19,12 +19,12 @@ import {UserStepsComponent} from './user-steps/user-steps.component'
 //import {ChartistModule} from 'angular2-chartist';
 import {UserStepsWeekComponent} from './user-steps-week/user-steps-week.component';
 
-import { ChartModule } from 'angular2-highcharts';
+import {ChartModule} from 'angular2-highcharts';
 import {MomentModule} from 'angular2-moment';
-import { UserDetailComponent } from './user-detail/user-detail.component';
-import { UserChatComponent } from './user-chat/user-chat.component';
+import {UserDetailComponent} from './user-detail/user-detail.component';
+import {BotDetailComponent} from './bot-detail/bot-detail.component';
+import {UserChatComponent} from './user-chat/user-chat.component';
 
-//var firebaseConfig = require('./firebase.json');
 const firebaseConfig = {
   "apiKey": "AIzaSyAHfTGyRQgRgeumLCvn2zlez5cL_tfKz2k",
   "authDomain": "recess-app-008.firebaseapp.com",
@@ -46,6 +46,7 @@ const firebaseConfig = {
     UserStepsWeekComponent,
     UserDetailComponent,
     UserChatComponent,
+    BotDetailComponent,
 
   ],
   imports: [

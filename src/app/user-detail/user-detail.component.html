@@ -57,11 +57,16 @@
   </div>
 
   <div class="chat__settings" [hidden]="!settingsActive">
-
+    {{conversation.type}}
     <div class="chat__settings--info">
       <span class="chat-settings__userhighlight">{{ (user | async)?.alias }}</span>
       <i class="material-icons">swap_horiz</i>
-      <span class="chat-settings__userhighlight">{{conversation.alias}}</span>
+      <span class="chat-settings__userhighlight"><i class="material-icons">forum</i>{{conversation.alias}}</span>
+    </div>
+
+    <div>
+      <i class="material-icons">groups</i>
+      <span>Participants</span>
     </div>
 
     <div class="chat-settings__userlist">
@@ -73,6 +78,22 @@
         <label for="chatwith-{{user.user.uid}}">{{user.user.alias}}</label>
       </div>
     </div>
+
+    <div>
+      <i class="material-icons">android</i>
+      <span>Bots</span>
+    </div>
+
+    <div *ngFor="let bot of bots | async" class="chat-settings-userlist__user"
+         [ngClass]="{'chat-settings-userlist__user--active': bot.bot.uid === conversation.uid}">
+      <input type="radio" id="chatwith-{{bot.bot.uid}}" name="selector"
+             [checked]="bot.bot.uid === conversation.uid"
+             (change)="onSelectionChangeBot(bot.bot.uid)">
+      <label for="chatwith-{{bot.bot.uid}}">{{bot.bot.alias}}</label>
+    </div>
+
+
+
   </div>
 
 
