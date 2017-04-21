@@ -1,10 +1,10 @@
-import { RecessWebPage } from './app.po';
+import { RecessDashboardPage } from './app.po';
 
-describe('recess-web App', function() {
-  let page: RecessWebPage;
+describe('recess-dashboard App', () => {
+  let page: RecessDashboardPage;
 
   beforeEach(() => {
-    page = new RecessWebPage();
+    page = new RecessDashboardPage();
   });
 
   it('should display message saying app works', () => {

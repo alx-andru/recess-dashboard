@@ -1,51 +1,58 @@
 @import '../../scss/colors';
 @import '../../scss/mixins';
 
-.login {
-  background-color: $sunflower;
+:host {
+  background-image: url('../../assets/background.jpg');
+  background-size: cover;
+  width: 100%;
   height: 100%;
-  width: 100%;
-  padding: 10%;
-}
-
-.login__card {
-  margin: 0 auto;
-}
-
-.login-card__title {
-  background-color: $recess_base_contrast_1;
-  color: $recess_font_base;
-  @include flex();
-  text-align: center;
-  h1 {
-    font-size: 2rem;
-    padding: 0;
-    margin: 0;
-  }
-  img {
-    width: 100%;
-  }
-}
-
-.login-card__actions {
-
-}
-
-.button-login {
   @include flex('row');
-  justify-content: flex-start;
-  align-items: center;
-  cursor: pointer;
+
 }
 
-.button-login__logo {
-  height: 2rem;
-  width: 4rem;
-  padding: 0 1rem;
-}
-
-.button-login__text {
-  align-self: stretch;
+.background {
   width: 100%;
-  line-height: 2rem;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.9);
+  //background: rgba(241, 196, 15, 0.6);
+  @include flex('row');
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  //background-color:$recess_base_3;
+
+}
+
+.content {
+  background-color: $primary_recess;
+  height: 100%;
+  width: 30rem;
+  @include flex();
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  padding: 4rem;
+  img {
+    max-width: 15rem;
+  }
+
+  .login {
+    cursor:pointer;
+    background-color: $recess_base_contrast_1;
+    width: 100%;
+    height: 4rem;
+    min-height: 4rem;
+    color: $recess_base_1;
+    @include flex('row');
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    @include border-radius(0.5rem);
+
+    img {
+      max-width: 2rem;
+      margin-right: 1rem;
+    }
+  }
 }

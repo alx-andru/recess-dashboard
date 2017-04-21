@@ -1,27 +1,7 @@
-<div class="dashboard">
-  <section class="sidebar">
-    <header class="sidebar__header">
-      <a href="/dashboard">
-        <span class="sidebar__header__logo">
-          <img src="assets/recess_logo_r_transparent_100x100.png"/>
-          <span>ecess</span><span class="dot">.</span>
-        </span>
-      </a>
+<section>
+  <app-breadcrumbs [title]="title"></app-breadcrumbs>
+</section>
+<section>
+  Content
 
-    </header>
-
-    <app-user-list class="content__userlist" (notify)='onNotify($event)'></app-user-list>
-  </section>
-
-  <section class="context">
-
-    <router-outlet></router-outlet>
-
-  </section>
-
-
-</div>
-
-
-
-
+</section>

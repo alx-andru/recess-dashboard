@@ -16,9 +16,35 @@
   <meta name="msapplication-TileImage" content="/assets/mstile-144x144.png?v=pgrWx6YKv4">
   <meta name="msapplication-config" content="/assets/browserconfig.xml?v=pgrWx6YKv4">
   <meta name="theme-color" content="#f1c40f">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+
+  <style>
+
+    html {
+      box-sizing: border-box;
+      height: 100%;
+      width: 100%;
+      font-size: 14px;
+    }
+
+    body {
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    *, *:before, *:after {
+      box-sizing: inherit;
+      font-family: 'Lato', sans-serif;
+      outline:none;
+    }
+
+
+  </style>
 </head>
-<body>
-  <div class="mdl-spinner mdl-js-spinner is-active"></div>
-  <app-root></app-root>
+<body class="body">
+<app-root></app-root>
 </body>
 </html>

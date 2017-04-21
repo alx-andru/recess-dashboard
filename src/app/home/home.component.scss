@@ -1,0 +1,23 @@
+@import '../../scss/colors';
+@import '../../scss/mixins';
+
+:host {
+  @include flex('row');
+  margin:0;
+  background-color:$recess_base_1;
+  height: 100%;
+}
+
+#navigation {
+  height: 100%;
+}
+
+#content{
+  width: 100%;
+  height: 100%;
+  @include flex();
+  justify-content: flex-start;
+  align-content: flex-start;
+}
+
+

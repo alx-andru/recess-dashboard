@@ -1,93 +1,9 @@
 @import '../../scss/colors';
 @import '../../scss/mixins';
 
-.dashboard {
-  height: 100%;
-  @include flex('row');
-}
 
-
-
-.sidebar {
-  background-color: $recess_base_contrast_1;
-  color: $recess_font_base;
-  height: 100%;
-  width: 20rem;
-  min-width: 20rem;
-  max-width: 20rem;
-  overflow-y: scroll;
-
-
-}
-
-.sidebar__header {
-  //background-color: $primary_recess;
-  height: 4rem;
-  padding: 1rem 2rem;
-
-  a {
-    text-decoration: none;
-  }
-
-}
-
-.sidebar__header__logo {
-  font-size: 2rem;
-  font-weight: 900;
-  font-family: 'Lato Medium';
-  text-align: center;
-
-  @include flex('row');
-  justify-content: flex-start;
-
-  img {
-    height: 2rem;
-    padding-right: 0;
-  }
-  span {
-    color: $recess_base_3;
-    &.dot {
-      color: $primary_recess;
-    }
-  }
-}
-
-.context {
-  @include flex();
+:host {
+  background-color: $recess_base_1;
   width: 100%;
   height: 100%;
-  justify-content: flex-start;
-  min-width: 60rem;
-  overflow: hidden;
-}
-
-
-
-
-.content-users {
-  background-color: $recess_base_3;
-}
-
-.content-users-user {
-  @include flex(row);
-  padding: 0.5rem;
-}
-
-.box {
-  background-color: $recess_primary;
-  height: 10rem;
-  width: 10rem;
-  @include flex;
-
-  margin-right: 1rem;
-  margin-bottom: 1rem;
-}
-
-.box-flex {
-  width: 100%;
-  background-color: $recess_danger;
-}
-
-.content__userlist {
-  width: 100%;
 }

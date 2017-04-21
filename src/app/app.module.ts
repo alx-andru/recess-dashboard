@@ -2,66 +2,85 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
-import {MDL} from './MaterialDesignLiteUpgradeElement';
-import {AngularFireModule, AuthMethods, AuthProviders} from 'angularfire2';
 
 import {routing} from './app.routes';
 
+import {AngularFireModule, AuthMethods, AuthProviders} from 'angularfire2';
+import {AuthGuard} from './auth.guard';
+
+
 import {AppComponent} from './app.component';
-import {UserListComponent} from './user-list/user-list.component';
 import {LoginComponent} from './login/login.component';
-import {DashboardComponent} from './dashboard/dashboard.component';
-
-import {AuthGuard} from './AuthGuard';
 import {HomeComponent} from './home/home.component';
-import {UserStepsComponent} from './user-steps/user-steps.component'
 
-//import {ChartistModule} from 'angular2-chartist';
-import {UserStepsWeekComponent} from './user-steps-week/user-steps-week.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {NavigationComponent} from './home/navigation/navigation.component';
+import {BreadcrumbsComponent} from './ui/breadcrumbs/breadcrumbs.component';
 
-import {ChartModule} from 'angular2-highcharts';
+import {BotsComponent} from './bots/bots.component';
+import {BotListComponent} from './bots/bot-list/bot-list.component';
+import {BotDetailsComponent} from './bots/bot-details/bot-details.component';
+
+import {UsersComponent} from './users/users.component';
+import {UserListComponent} from './users/user-list/user-list.component';
+import {UserDetailsComponent} from './users/user-details/user-details.component';
+import {UserChatComponent} from './users/user-chat/user-chat.component';
+
+import {StepsComponent} from './ui/charts/steps/steps.component';
+
 import {MomentModule} from 'angular2-moment';
-import {UserDetailComponent} from './user-detail/user-detail.component';
-import {BotDetailComponent} from './bot-detail/bot-detail.component';
-import {UserChatComponent} from './user-chat/user-chat.component';
+import {ChartistModule} from 'ng-chartist/src/chartist.component';
+import { AliasPipe } from './pipes/alias.pipe';
+import { ExportComponent } from './export/export.component';
+import { ButtonComponent } from './ui/button/button.component';
+import { environment } from '../environments/environment';
 
 const firebaseConfig = {
-  "apiKey": "AIzaSyAHfTGyRQgRgeumLCvn2zlez5cL_tfKz2k",
-  "authDomain": "recess-app-008.firebaseapp.com",
-  "databaseURL": "https://recess-app-008.firebaseio.com",
-  "storageBucket": "recess-app-008.appspot.com",
-  "messagingSenderId": "105024553958"
+  apiKey: environment.apiKey,
+  authDomain: environment.authDomain,
+  databaseURL: environment.databaseURL,
+  storageBucket: environment.storageBucket,
+  messagingSenderId: environment.messagingSenderId
 };
-
 
 @NgModule({
   declarations: [
     AppComponent,
-    MDL,
-    UserListComponent,
-    LoginComponent,
     DashboardComponent,
+    LoginComponent,
+    NavigationComponent,
     HomeComponent,
-    UserStepsComponent,
-    UserStepsWeekComponent,
-    UserDetailComponent,
-    UserChatComponent,
-    BotDetailComponent,
+    BreadcrumbsComponent,
 
+    UsersComponent,
+    UserListComponent,
+    UserDetailsComponent,
+
+    BotsComponent,
+    BotListComponent,
+    BotDetailsComponent,
+    UserChatComponent,
+    StepsComponent,
+    AliasPipe,
+    ExportComponent,
+    ButtonComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     routing,
-    //ChartistModule,
-    ChartModule,
-    MomentModule,
     AngularFireModule.initializeApp(firebaseConfig, {
       provider: AuthProviders.Google,
       method: AuthMethods.Redirect
-    })],
-  providers: [AuthGuard],
+    }),
+    MomentModule,
+    ChartistModule
+
+  ],
+  providers: [
+    AuthGuard,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Routes} from '@angular/router';
-import {AngularFire, AuthProviders} from 'angularfire2';
-
-
+import {ActivatedRoute} from '@angular/router';
+import {AngularFire} from 'angularfire2';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,32 +8,17 @@ import {AngularFire, AuthProviders} from 'angularfire2';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  title: string;
+  newBot: any;
 
-  user = {};
+  constructor(private af: AngularFire) {
+    this.title = 'Dashboard';
+    this.newBot = this.af.database.object(`/bots/smarty`);
 
-  constructor(public af: AngularFire) {
-    this.af.auth.subscribe(user => {
-      if (user) {
-        // user logged in
-        this.user = user;
-      }
-      else {
-        // user not logged in
-        this.user = {};
-      }
-    });
-  }
-
-  onNotify(message: string): void {
-    console.log(message);
-
-  }
-
-  logout() {
-    this.af.auth.logout();
   }
 
   ngOnInit() {
+
   }
 
 }

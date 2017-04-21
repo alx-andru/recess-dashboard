@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {AngularFire} from 'angularfire2';
 
 @Component({
   selector: 'app-home',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  user: any;
 
-  constructor() { }
+  constructor(private af: AngularFire) {
+
+  }
 
   ngOnInit() {
   }
+
 
 }

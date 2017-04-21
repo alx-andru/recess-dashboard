@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class RecessWebPage {
+export class RecessDashboardPage {
   navigateTo() {
     return browser.get('/');
   }

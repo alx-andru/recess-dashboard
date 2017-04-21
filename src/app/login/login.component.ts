@@ -1,5 +1,6 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {AngularFire, AuthProviders} from 'angularfire2';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,8 +10,11 @@ import {AngularFire, AuthProviders} from 'angularfire2';
 
 
 export class LoginComponent implements OnInit {
-  @Output() notify: EventEmitter<any> = new EventEmitter();
 
+  user = {};
+  page = 'login';
+
+  @Output() notify: EventEmitter<any> = new EventEmitter();
 
   ngOnInit() {
     this.notify.emit({
@@ -19,17 +23,14 @@ export class LoginComponent implements OnInit {
     console.log('Login init');
   }
 
-  user = {};
-  page = 'login';
-
-  constructor(public af: AngularFire) {
+  constructor(public af: AngularFire, private router: Router) {
     this.page = 'login';
     this.af.auth.subscribe(user => {
       if (user) {
         // user logged in
         this.user = user;
-      }
-      else {
+        this.router.navigate(['/dashboard']);
+      } else {
         // user not logged in
         this.user = {};
       }
