@@ -1,0 +1,37 @@
+<div class="filter">
+  <i class="material-icons">filter_list</i>
+
+</div>
+<div class="list">
+
+  <div class="user" *ngFor="let user of users"
+       [routerLink]="['/users', user.key]"
+       [routerLinkActive]="['is-active']">
+
+    <div class="status">
+      <div class="indicators">
+
+        <span class="week1">
+          <i class="material-icons" [ngClass]="{'isChatActive':user.val().mode=='C'}">lens</i>
+        </span>
+
+        <span class="week2">
+           <i class="material-icons" *ngIf="((today | amDifference: user.val()?.createdAt :'weeks' : false)+1) == 1"
+              [ngClass]="{'isChatActive':user.val().mode=='C' || (user.val().mode=='B')} ">panorama_fish_eye</i>
+          <i class="material-icons"
+             *ngIf="((today | amDifference: user.val()?.createdAt :'weeks' : false)+1) >= 2"
+             [ngClass]="{'isChatActive':user.val().mode=='C' || (user.val().mode=='B')} ">lens</i>
+        </span>
+
+      </div>
+      <div class="light">
+        {{user.val().mode}} {{ ((today | amDifference: user.val()?.createdAt :'weeks' : false)+1) }}
+      </div>
+    </div>
+    <div class="info">
+      <div>{{user.val().alias}}</div>
+      <div class="light">{{user.val().device.manufacturer}} - {{user.val().device.model}}</div>
+    </div>
+  </div>
+
+</div>

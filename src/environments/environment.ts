@@ -6,10 +6,10 @@
 export const environment = {
   production: false,
   // firebase
-  apiKey: 'AIzaSyBBb5a3AIVkM1LaVmAbJjeAal0FuGL_JZI',
-  authDomain: 'recess-app-011-a40ca.firebaseapp.com',
-  databaseURL: 'https://recess-app-011-a40ca.firebaseio.com',
-  storageBucket: 'recess-app-011-a40ca.appspot.com',
-  messagingSenderId: '612209501790',
+  apiKey: '',
+  authDomain: '',
+  databaseURL: '',
+  storageBucket: '',
+  messagingSenderId: '',
 
 };

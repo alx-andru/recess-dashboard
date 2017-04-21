@@ -1,0 +1,151 @@
+<div class="details">
+
+  <div class="steps">
+    <app-steps [uid]="uid"></app-steps>
+  </div>
+
+  <div class="wrap">
+
+    <div class="tile">
+      <header>
+        <i class="material-icons">person</i>
+        <span>User</span>
+      </header>
+
+      <section class="details">
+        <div class="detail">
+          <div class="label">Id</div>
+          <div class="value">{{(user | async)?.$key }}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Alias</div>
+          <div class="value">{{(user | async)?.alias }}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Type</div>
+          <div class="value">{{(user | async)?.type}}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Created at</div>
+          <div class="value">{{(user | async)?.createdAt | date:'short'}}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Mode</div>
+          <div class="value">{{(user | async)?.mode }}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Week</div>
+          <div class="value">{{ (today | amDifference: (user | async)?.createdAt :'weeks' : false)+1 }}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Day</div>
+          <div class="value">{{ today | amDifference: (user | async)?.createdAt :'days' : false }}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Unread Messages</div>
+          <div class="value">{{(config | async)?.phases.social.unreadMessages }}</div>
+        </div>
+
+
+      </section>
+
+    </div>
+
+    <div class="tile">
+      <header>
+        <i class="material-icons">smartphone</i>
+        <span>Device</span>
+      </header>
+      <section class="details">
+        <div class="detail">
+          <div class="label">App version</div>
+          <div class="value">{{(user | async)?.device.appVersion}}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Platform</div>
+          <div class="value">{{(user | async)?.device.platform}}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Manufacturer</div>
+          <div class="value">{{(user | async)?.device.manufacturer }}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Model</div>
+          <div class="value">{{(user | async)?.device.model }}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Version</div>
+          <div class="value">{{(user | async)?.device.version }}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Push Token</div>
+          <div class="value">{{(user | async)?.pushToken | slice:0:10 }}</div>
+        </div>
+
+      </section>
+
+    </div>
+
+    <div class="tile">
+      <header>
+        <i class="material-icons">playlist_add_check</i>
+        <span>Survey</span>
+      </header>
+
+      <section class="details">
+
+        <div class="detail">
+          <div class="label">Agreed to study</div>
+          <div class="value">{{(survey | async)?.agreedToStudy }}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Age</div>
+          <div class="value">{{(survey | async)?.age }}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Intensity</div>
+          <div class="value">{{(survey | async)?.intensity }}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Occupation</div>
+          <div class="value">{{(survey | async)?.occupation }}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Tracker</div>
+          <div class="value">{{(survey | async)?.tracker }}</div>
+        </div>
+
+
+      </section>
+
+    </div>
+
+    <div class="tile">
+      <header>
+        <i class="material-icons">assignment</i>
+        <span>Goals</span>
+      </header>
+
+      <section class="details">
+
+        <div class="detail">
+          <div class="label">Steps</div>
+          <div class="value ">{{(config | async)?.phases.goals.settings.steps | number:0}}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Activity</div>
+          <div class="value">{{(config | async)?.phases.goals.settings.activity }}</div>
+        </div>
+
+      </section>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="chat">
+  <app-user-chat [uid]="(user | async)?.$key"></app-user-chat>
+</div>

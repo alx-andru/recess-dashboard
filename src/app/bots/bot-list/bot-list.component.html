@@ -1,0 +1,25 @@
+<div class="filter">
+  <i class="material-icons">filter_list</i>
+</div>
+<div class="list">
+
+  <div class="bot" *ngFor="let bot of bots"
+       [routerLink]="['/bots', bot.key]"
+       [routerLinkActive]="['is-active']">
+
+    <div class="status">
+      <div class="indicators">
+        <i class="material-icons">lens</i>
+      </div>
+      <div class="light">active</div>
+
+    </div>
+
+    <div class="info">
+      <div>{{bot.val().alias}}</div>
+      <div>{{bot.val().subtype}}</div>
+    </div>
+
+  </div>
+
+</div>

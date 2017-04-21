@@ -1,0 +1,56 @@
+@import '../../../scss/colors';
+@import '../../../scss/mixins';
+
+:host {
+  @include flex();
+  height: 100%;
+  background-color: $recess_base_contrast_1;
+  color: $recess_base_1;
+  justify-content: flex-start;
+
+}
+
+header {
+  img {
+    max-width: 2rem;
+    padding: 1rem 0 2rem 0;
+  }
+}
+
+.navigation {
+  width: 5rem;
+  @include flex();
+  align-content: center;
+  align-items: center;
+
+  .item {
+    @include flex();
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    background-color: $recess_base_contrast_2;
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+
+    &.is-active {
+
+      i {
+        color: $primary_recess;
+      }
+
+    }
+
+    &:hover {
+      i {
+        color: $recess_base_1;
+      }
+    }
+
+    i {
+      color: $recess_font_base;
+    }
+  }
+}
+

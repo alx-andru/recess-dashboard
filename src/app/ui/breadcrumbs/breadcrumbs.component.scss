@@ -1,0 +1,37 @@
+@import '../../../scss/colors';
+@import '../../../scss/mixins';
+
+:host {
+
+}
+
+.breadcrumbs {
+  background-color: $recess_base_3;
+  height: 4rem;
+  @include flex('row');
+  justify-content: space-between;
+  padding: 0 2rem;
+
+  .title {
+  }
+
+  .tools {
+    @include flex('row');
+    justify-content: center;
+    .photo {
+      padding-left: 1rem;
+      img {
+        @include border-radius(2rem);
+        width: 2rem;
+        height: 2rem;
+      }
+
+    }
+  }
+
+}
+
+
+
+
+

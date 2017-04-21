@@ -1,0 +1,182 @@
+@import '../../../scss/colors';
+@import '../../../scss/mixins';
+
+.chat {
+  background-color: $recess_base_2;
+  height: 100%;
+  width: 100%;
+  color: $recess_font_base;
+  @include flex();
+  justify-content: flex-start;
+
+  header {
+    @include flex('row');
+    padding: 1rem 2rem;
+    justify-content: space-between;
+    width: 100%;
+
+    div {
+      cursor: pointer;
+      height: 2rem;
+      line-height: 3rem;
+      @include flex('row');
+      align-items: center;
+      i {
+        padding-right: 0.5rem;
+        font-size: 1rem;
+      }
+      &.active {
+        border-bottom: $primary_recess 0.2rem solid;
+      }
+
+    }
+
+  }
+
+  .conversation {
+    height: 100%;
+    width: 100%;
+
+    @include flex();
+    justify-content: space-between;
+
+    .chat__messages {
+      width: 100%;
+      height: 100%;
+      overflow-y: scroll;
+      padding: 1rem;
+      @include flex();
+      justify-content: flex-start;
+
+      .message-details {
+        font-size: 0.8rem;
+      }
+    }
+
+    .chat__inputfield {
+      border-top: 1px solid rgba(222, 227, 231, 0.56);
+      width: 100%;
+
+      padding: 1rem;
+      height: 5rem;
+
+
+      .field {
+        @include flex('row');
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      .text {
+        width: 100%;
+        input {
+          width: 100%;
+          padding: 0.25rem;
+          line-height: 1.5rem;
+        }
+      }
+
+      .submit {
+        padding: 0 0 0 1rem;
+        cursor:pointer;
+      }
+
+    }
+    .chat__alias {
+      height: 1rem;
+      text-align: left;
+      width: 100%;
+      padding: 0 1rem;
+      font-size: 0.8rem;
+    }
+
+    .chat-messages__message {
+      margin-bottom: 0.25rem;
+      width: 100%;
+      //@include flex();
+      max-height: 100%;
+      //height: 100%;
+      justify-content: flex-start;
+      align-items: flex-start;
+      border-left: 0.25rem solid $recess_base_1;
+      padding-left: 1rem;
+      padding-bottom: 0.25rem;
+      //flex: 1;
+    }
+
+    .chat-messages__message-self {
+      border-color: $primary_recess;
+      .cchat-messages-message__bubble {
+        background-color: $primary_recess;
+      }
+    }
+
+    .chat-messages-message__item {
+
+      @include flex('row');
+      align-self: flex-start;
+      justify-self: flex-start;
+
+      align-items: flex-start;
+    }
+
+    .chat-messages-message__bubble {
+
+      background-color: $recess_base_1;
+      padding: 0.25rem 0.5rem;
+      @include border-radius(0.25rem);
+    }
+
+  }
+
+  .settings {
+    background-color: $recess_base_2;
+    height: 100%;
+    width: 100%;
+
+    .asAdmin {
+      padding: 0 2rem;
+      i {
+        font-size: 1rem;
+      }
+    }
+
+    .category {
+      padding: 1rem 1rem 0 1rem;
+      i {
+        font-size: 0.9rem;
+      }
+    }
+
+    .bots, .participants {
+      width: 100%;
+      overflow-y: scroll;
+
+      & .bot, & .user {
+        box-sizing: border-box;
+        cursor: pointer;
+        padding: 0.125rem 2rem;
+        i {
+          &.hide {
+            color: $recess_base_2;
+          }
+          font-size: 0.9rem;
+        }
+        border-left: 0.25rem solid $recess_base_2;
+
+      }
+      & .selected {
+        background-color: $recess_base_1;
+        border-left: 0.25rem solid $primary_recess;
+      }
+    }
+
+    .participants {
+
+    }
+
+  }
+
+}
+
+

@@ -1,0 +1,26 @@
+{
+  "msg_id": "9b7db479-ee97-4f74-8c2c-3703fe7536ba",
+  "_text": "Do you have a boyfriend?",
+  "entities": {
+    "contact": [
+      {
+        "confidence": 0.8815669963483032,
+        "type": "value",
+        "value": "you",
+        "suggested": true
+      },
+      {
+        "confidence": 0.7832144043059662,
+        "type": "value",
+        "value": "boyfriend",
+        "suggested": true
+      }
+    ],
+    "intent": [
+      {
+        "confidence": 0.9986389279726695,
+        "value": "meet/flirt"
+      }
+    ]
+  }
+}

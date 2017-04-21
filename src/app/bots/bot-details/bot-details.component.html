@@ -1,0 +1,39 @@
+<div class="details">
+
+  <div class="wrap">
+    <div class="tile">
+      <header>
+        <i class="material-icons">android</i>
+        <span>Details</span>
+      </header>
+
+      <section class="details">
+        <div class="detail">
+          <div class="label">Created at</div>
+          <div class="value">{{(bot | async)?.timestamp | date:'medium'}}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Alias</div>
+          <div class="value">{{(bot | async)?.alias }}</div>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="tile">
+
+      <header>
+        <i class="material-icons">group</i>
+        <span>Connected Users</span>
+      </header>
+
+      <section class="details">
+        <div class="detail" *ngFor="let user of users | async" >
+          <div class="label" *ngIf="user.$key !== 'empty'">UserId</div>
+          <div class="value" *ngIf="user.$key !== 'empty'">{{user.$key | alias }}</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>

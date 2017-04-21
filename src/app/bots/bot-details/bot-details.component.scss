@@ -1,0 +1,79 @@
+@import '../../../scss/colors';
+@import '../../../scss/mixins';
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  @include flex('row');
+
+}
+.details {
+  width: 100%;
+  height: 100%;
+  @include flex();
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow: scroll;
+
+
+}
+
+.wrap {
+  @include flex('row');
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  padding: 1rem 0 1rem 1rem;
+
+}
+.tile {
+  background-color: $recess_base_3;
+  padding: 1rem;
+  width: 20rem;
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+  flex:auto;
+
+  header {
+    @include flex('row');
+    justify-content: flex-start;
+    align-content:center;
+    align-items: center;
+    color: $recess_font_base;
+    padding-bottom: 1rem;
+
+    i {
+      font-size: 1rem;
+      padding: 0.25rem;
+    }
+    span {
+      margin-left: 0.5rem;
+    }
+  }
+
+  .details {
+    @include flex();
+    justify-content: flex-start;
+    width: 100%;
+    color: $recess_font_base;
+
+    .detail {
+      width: 100%;
+      @include flex('row');
+      justify-content: space-between;
+
+      .label {
+
+      }
+
+      .value {
+        font-weight: bold;
+      }
+
+    }
+
+  }
+
+
+}

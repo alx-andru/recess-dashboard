@@ -1,0 +1,23 @@
+@import '../../../scss/colors';
+@import '../../../scss/mixins';
+
+
+.button {
+  @include flex('row');
+  max-width: 7rem;
+  padding: 0.25rem;
+
+  @include border-radius(0.25rem);
+
+  background-color: $recess_danger;
+  cursor: pointer;
+
+  i {
+    width: 2rem;
+  }
+  .title {
+    width: 100%;
+    text-align: center;
+  }
+
+}

@@ -1,0 +1,97 @@
+<div class="chat">
+  <header>
+    <div [ngClass]="{'active':!isSettings}" (click)="isSettings = false">
+      <i class="material-icons">forum</i> Conversation
+    </div>
+    <div [ngClass]="{'active':isSettings}" (click)="isSettings = true">
+      <i class="material-icons">compare_arrows</i> Settings
+    </div>
+  </header>
+
+  <div class="conversation" *ngIf="!isSettings">
+
+    <div class="chat__messages">
+      <div *ngFor="let message of messages | async" class="chat-messages__message"
+           [ngClass]="{'chat-messages__message-self': message.author === uid}"
+           [hidden]="message.$key === 'placeholder'">
+
+        <div class="chat-messages-message__item">
+          <div class="chat-messages-message__bubble">{{message.text}}</div>
+          <div></div>
+        </div>
+
+        <div class="message-details">
+          {{ message?.author || message.uid }} - {{message.timestamp | date:'dd.MM. HH:mm'}}
+        </div>
+      </div>
+    </div>
+
+
+    <div class="chat__inputfield">
+      <div class="field">
+        <div class="text">
+          <input class="input" type="text" id="bla" placeholder="message..." #message>
+
+        </div>
+
+        <div class="submit">
+          <i class="material-icons" (click)="sendMessage(message)">send</i>
+        </div>
+      </div>
+
+      <div class="chat__alias">
+        Message as: <span [hidden]="asAdmin">{{displayName}}</span><span [hidden]="!asAdmin">user</span>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+  <div class="settings" *ngIf="isSettings">
+    <div class="asAdmin" (click)="asAdmin = !asAdmin">
+      <span [hidden]="asAdmin"><i class="material-icons">radio_button_unchecked</i></span>
+      <span [hidden]="!asAdmin"><i class="material-icons">check</i></span>
+      Send message as admin?
+
+    </div>
+
+    <div class="category">
+      <i class="material-icons">android</i> Bots
+    </div>
+
+    <div class="bots">
+      <div class="bot"
+           *ngFor="let bot of bots | async"
+           (click)="talkToBot(bot.$key)"
+           [ngClass]="{selected: ( uid == (settings | async)?.talkTo && bot.users[uid] === true  && ((settings | async)?.talkToBot === bot.$key) ) }">
+
+
+        {{bot.alias}}
+      </div>
+    </div>
+
+
+    <div class="category">
+      <i class="material-icons">group</i> Participants
+    </div>
+
+
+    <div class="participants">
+      <div class="user" *ngFor="let user of users | async"
+           (click)="talkToParticipant(user.uid)"
+           [ngClass]="{selected: user.uid == (settings | async)?.talkTo }">
+
+
+        {{user.alias}}
+
+      </div>
+    </div>
+
+
+  </div>
+
+
+</div>

@@ -1,0 +1,29 @@
+<header [routerLink]="['']">
+  <img src="/assets/recess_logo_bubble.png">
+</header>
+
+<div class="navigation">
+  <div class="item"
+       [routerLink]="['/dashboard']"
+       [routerLinkActive]="['is-active']">
+    <i class="material-icons">dashboard</i>
+  </div>
+
+  <div class="item"
+       [routerLink]="['/bots']"
+       [routerLinkActive]="['is-active']">
+    <i class="material-icons">android</i>
+  </div>
+
+  <div class="item"
+       [routerLink]="['/users']"
+       [routerLinkActive]="['is-active']">
+    <i class="material-icons">group</i>
+  </div>
+
+  <div class="item"
+       [routerLink]="['/export']"
+       [routerLinkActive]="['is-active']">
+    <i class="material-icons">import_export</i>
+  </div>
+</div>

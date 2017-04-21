@@ -1,0 +1,58 @@
+@import '../../scss/colors';
+@import '../../scss/mixins';
+
+:host {
+  background-color: $recess_base_1;
+  width: 100%;
+  height: 100%;
+  @include flex();
+  justify-content: flex-start;
+}
+
+app-breadcrumbs {
+  width: 100%;
+}
+
+.content {
+  height: 100%;
+  width: 100%;
+  @include flex();
+  justify-content: flex-start;
+  align-content: flex-start;
+
+  .header {
+    width: 100%;
+    height: 30rem;
+    background-color: $primary_recess;
+    @include flex('row');
+    justify-content: flex-start;
+    padding-top: 5rem;
+    h1,h2 {
+      font-size: 1rem;
+      margin:0;
+      padding:0;
+
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+    h2 {
+      font-weight: 300;
+    }
+    .title {
+      height: 100%;
+      padding-left: 10rem;
+      width: 30rem;
+
+
+    }
+
+    .stats {
+      width: 100%;
+      height: 100%;
+      padding: 2rem;
+    }
+  }
+
+}

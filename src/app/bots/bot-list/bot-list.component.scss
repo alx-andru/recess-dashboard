@@ -1,0 +1,72 @@
+@import '../../../scss/colors';
+@import '../../../scss/mixins';
+
+:host {
+  @include flex();
+  justify-content: flex-start;
+  height: 100%;
+  width: 100%;
+}
+
+.filter {
+  height: 4.2rem;
+  width: 100%;
+  @include flex('row');
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+}
+
+.list {
+  height: 100%;
+  width:100%;
+  @include flex();
+  justify-content: flex-start;
+  overflow: scroll;
+
+  .light {
+    font-weight: 300;
+    font-size: 0.8rem;
+  }
+
+  .bot {
+    background-color: $recess_base_contrast_1;
+    width: 100%;
+    height: 4rem;
+    margin-bottom: 0.1rem;
+    cursor: pointer;
+    color: $recess_font_base;
+    padding: 0 1rem;
+    @include flex('row');
+    justify-content: flex-start;
+
+    &.is-active {
+      border-right: 0.5rem solid $primary_recess;
+    }
+
+    .status {
+      @include flex();
+      justify-content: space-between;
+      align-items: center;
+      align-content: center;
+
+      i {
+        font-size: 0.6rem;
+      }
+
+      .indicators {
+        .isChatActive {
+          color: $primary_recess;
+        }
+      }
+
+    }
+    .info {
+      padding: 0 0 0 1rem;
+
+    }
+
+
+
+  }
+}
