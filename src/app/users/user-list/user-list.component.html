@@ -24,8 +24,10 @@
         </span>
 
       </div>
-      <div class="light">
-        {{user.val().mode}} {{ ((today | amDifference: user.val()?.createdAt :'weeks' : false)+1) }}
+      <div class="light" *ngIf="{number:((today | amDifference: user.val()?.createdAt :'weeks' : false)+1) } as week">
+        <span *ngIf="week.number >= 3">{{user.val().mode}} 3</span>
+        <span *ngIf="week.number < 3">{{user.val().mode}} {{ week.number }}</span>
+
       </div>
     </div>
     <div class="info">

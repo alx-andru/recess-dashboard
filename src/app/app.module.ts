@@ -1,4 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
@@ -29,11 +30,12 @@ import {UserChatComponent} from './users/user-chat/user-chat.component';
 import {StepsComponent} from './ui/charts/steps/steps.component';
 
 import {MomentModule} from 'angular2-moment';
-import {ChartistModule} from 'ng-chartist/src/chartist.component';
-import { AliasPipe } from './pipes/alias.pipe';
-import { ExportComponent } from './export/export.component';
-import { ButtonComponent } from './ui/button/button.component';
-import { environment } from '../environments/environment';
+import {AliasPipe} from './pipes/alias.pipe';
+import {ExportComponent} from './export/export.component';
+import {ButtonComponent} from './ui/button/button.component';
+import {environment} from '../environments/environment';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
+
 
 const firebaseConfig = {
   apiKey: environment.apiKey,
@@ -75,7 +77,8 @@ const firebaseConfig = {
       method: AuthMethods.Redirect
     }),
     MomentModule,
-    ChartistModule
+    NgxChartsModule,
+    BrowserAnimationsModule
 
   ],
   providers: [

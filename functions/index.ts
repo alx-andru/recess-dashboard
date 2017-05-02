@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import * as recastai from 'recastai';
 
 import {environment} from './environments/environment';
+import * as gaussian from 'gaussian';
 
 const {Wit, log} = require('node-wit');
 const client = new Wit({accessToken: environment.wit});
@@ -66,7 +67,9 @@ async function buddyReplies(uid: string, message: string) {
         author: 'buddy',
         type: 'bot',
         alias: 'Buddy',
-        timestamp: moment().valueOf()
+        timestamp: moment().valueOf(),
+        description: 'Using Wit.ai with personality',
+
       });
 
     }
@@ -78,24 +81,36 @@ async function buddyReplies(uid: string, message: string) {
 async function witReplies(uid: string, message: string) {
   console.log('Bot "Witty" will reply');
 
+  const botRef = admin.database().ref(`/bots/witty/config/phases/social/unreadMessages`);
+  const bot = await botRef.once('value');
+
+
+  const mean = bot.config.messages.responetime.mean;
+  const variance = bot.config.messages.responetime.variance;
+  const standard_derivation = bot.config.messages.responetime.standard_deviation;
+
+  const distribution = gaussian(mean, variance, standard_derivation);
+  var sample = distribution.ppf(Math.random());
+
   await client.converse(`${uid}`, message, {}).then((res) => {
-    console.log('Response from Witty:');
-    console.log(JSON.stringify(res));
+    // console.log('Response from Witty:');
+    // console.log(JSON.stringify(res));
 
     const reply = res;
 
     if (reply !== null && reply !== undefined) {
 
-      admin.database().ref(`/user/${uid}/conversation/`).push({
-        text: reply.msg,
-        author: 'witty',
-        type: 'bot',
-        alias: 'Witty',
-        timestamp: moment().valueOf()
-      });
+      setTimeout(function () {
+        admin.database().ref(`/user/${uid}/conversation/`).push({
+          text: reply.msg,
+          author: 'witty',
+          type: 'bot',
+          alias: 'Witty',
+          timestamp: moment().valueOf(),
+        });
+      }, 3000);
 
     }
-
 
   }).catch(console.error);
 
@@ -191,6 +206,16 @@ export let reply = functions.database.ref(`/user/{uid}/conversation/{cuid}`).onW
           alias: 'Witty',
           timestamp: moment().valueOf(),
           users: {empty: true},
+          description: 'Using Wit.ai with personality',
+          config: {
+            messages: {
+              responsetime: {
+                mean: 10000,
+                variance: 2000,
+                standard_deviation: 5000,
+              }
+            }
+          }
         }).then(() => {
           console.log(`Bot ${bid} initialized.`);
         });
@@ -221,4 +246,9 @@ export let reply = functions.database.ref(`/user/{uid}/conversation/{cuid}`).onW
 
   }
 
+});
+
+
+export let hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => {
+  console.log('This job is ran every hour!');
 });

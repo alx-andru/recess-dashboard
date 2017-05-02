@@ -1,0 +1,14 @@
+{
+  "confidence": 0.06395502097771337,
+  "type": "stop",
+  "entities": {
+    "message_body": [
+      {
+        "confidence": 0.9495322463926708,
+        "type": "value",
+        "value": "test",
+        "suggested": true
+      }
+    ]
+  }
+}

@@ -21,8 +21,7 @@
 .list {
   height: 100%;
   width: 100%;
-  @include flex();
-  justify-content: flex-start;
+
   overflow: scroll;
 
   .light {
@@ -33,7 +32,7 @@
   .user {
     background-color: $recess_base_3;
     width: 100%;
-    height: 4rem;
+    height: 3rem;
     margin-bottom: 0.1rem;
     cursor: pointer;
     color: $recess_font_base;

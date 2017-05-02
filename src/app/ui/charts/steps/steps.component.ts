@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import * as moment from 'moment';
-import {_} from 'lodash';
+import * as _ from 'underscore';
 import {AngularFire} from 'angularfire2';
 
 @Component({
@@ -19,13 +19,47 @@ export class StepsComponent implements OnInit, OnChanges {
 
   @Input() uid: string;
 
-  constructor(private af: AngularFire) {
+  single: any[];
 
+
+  view: any[] = [300, 50];
+
+  // options
+  showXAxis = true;
+  showYAxis = true;
+  gradient = false;
+  showLegend = true;
+  showXAxisLabel = true;
+  xAxisLabel = 'Country';
+  showYAxisLabel = true;
+  yAxisLabel = 'Population';
+
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
+
+
+  constructor(private af: AngularFire) {
 
     this.data = {
       labels: [],
       series: []
     };
+
+    this.single = [
+      {
+        name: 'adsf',
+        value: 8940000
+      },
+      {
+        name: 'usa',
+        value: 5000000
+      },
+      {
+        name: 'france',
+        value: 7200000
+      }
+    ];
 
     this.options = {
       axisX: {
@@ -52,6 +86,11 @@ export class StepsComponent implements OnInit, OnChanges {
 
   }
 
+
+  onSelect(event) {
+    console.log(event);
+  }
+
   calculateSteps() {
     this.data = Object.assign({}, {
       labels: [],
@@ -71,7 +110,9 @@ export class StepsComponent implements OnInit, OnChanges {
           })
           .map(function (value, key) {
             const sum = _.reduce(value, function (memo, val) {
+
               return memo + val.value;
+
             }, 0);
             const day = moment(snapshot.$key, 'YYYY-MM-DD');
 
@@ -115,7 +156,7 @@ export class StepsComponent implements OnInit, OnChanges {
 
       _.each(grouped, source => {
         _.each(source, step => {
-          _.each(this.data.labels, (day, idx) => {
+          _.each(this.data.labels, (day: moment.Moment, idx) => {
             if (day.isSame(step.day, 'day')) {
               const sourceId = _.find(sources, src => {
                 return src.source === step.source;
@@ -129,6 +170,8 @@ export class StepsComponent implements OnInit, OnChanges {
 
 
       this.data = Object.assign({}, this.data);
+
+      console.log(this.data);
 
     });
   }
