@@ -48,3 +48,4 @@ Thumbs.db
 /src/environments/
 /functions/index.js
 /functions/index.js.map
+/.firebaserc
