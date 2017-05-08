@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges, ViewChild} from '@angular/core';
 import {AngularFire} from 'angularfire2';
 import {ActivatedRoute} from '@angular/router';
 import * as moment from 'moment';
@@ -22,6 +22,8 @@ export class UserChatComponent implements OnInit, OnChanges {
   displayName: any;
 
   asAdmin: boolean;
+  @ViewChild('message') message;
+
 
   constructor(private af: AngularFire, private route: ActivatedRoute) {
     console.log(this.uid);
@@ -59,6 +61,7 @@ export class UserChatComponent implements OnInit, OnChanges {
       timestamp: moment().valueOf(),
       author: this.asAdmin ? this.uid : this.displayName,
     });
+    this.message.nativeElement.value = '';
   }
 
   talkToParticipant(uid) {

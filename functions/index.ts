@@ -5,6 +5,7 @@ import * as recastai from 'recastai';
 
 import {environment} from './environments/environment';
 import * as gaussian from 'gaussian';
+import DataSnapshot = admin.database.DataSnapshot;
 
 const {Wit, log} = require('node-wit');
 const client = new Wit({accessToken: environment.wit});
@@ -20,13 +21,13 @@ const buddy = new recastai.Client(environment.recast, 'en');
 
 async function sendPushNotification(uid: string, message: string) {
   const tokenSnapshot = await admin.database().ref(`/users/${uid}/pushToken`).once('value');
-  console.log(`tokenSnapshot: ${tokenSnapshot.val()}`);
+  //console.log(`tokenSnapshot: ${tokenSnapshot.val()}`);
 
 
   // get push token Notification details.
   if (tokenSnapshot !== null && tokenSnapshot !== undefined) {
     const token = tokenSnapshot.val();
-    console.log(`Push token: ${token}`);
+    //console.log(`Push token: ${token}`);
 
     const badgeRef = admin.database().ref(`/user/${uid}/config/phases/social/unreadMessages`);
     let badge = await badgeRef.once('value');
@@ -49,6 +50,26 @@ async function sendPushNotification(uid: string, message: string) {
 
     return admin.messaging().sendToDevice(token, payload);
   }
+}
+
+function queueMessage(uid: string, delay: number, message: any) {
+
+  const queueRef = admin.database().ref(`/message_queue`);
+  queueRef.push({
+    message: message,
+    uid: uid,
+    timestamp: moment().add(delay, 'seconds').valueOf(),
+    last_checked: 0
+  });
+
+}
+
+
+async function sendMessage(uid: string, message: any) {
+  console.log('sending message');
+  console.log('after timeout', moment().valueOf());
+
+  await admin.database().ref(`/user/${uid}/conversation/`).push(message);
 }
 
 async function buddyReplies(uid: string, message: string) {
@@ -78,37 +99,81 @@ async function buddyReplies(uid: string, message: string) {
 
 }
 
+/*
+ — Each time going to send a message, delay by time X, where normally distributed:
+ — X has mean time = 10 min
+ — s.d. = 5 min
+ — Can tweak these numbers/distribution based on feedback
+
+
+ — Each morning at 9 am, send motivational message
+ — If haven’t received a message yet that day
+ — 50% chance to send
+ — Apply delay as above w/ 2x mean and s.d.?
+
+
+ — Each afternoon at 2pm, send message to check on goals
+ — If haven’t received a message since noon
+ — 50% chance to send
+ — randomize between step goals and healthy eating?
+ — Apply delay as above w/ 2x mean and s.d.?
+
+
+ — Each afternoon at 7pm, send message to check on goals
+ — If haven’t received a message since 5pm
+ — 50% chance to send
+ — randomize between step goals and healthy eating?
+ — Apply delay as above w/ 2x mean and s.d.?
+ */
+
 async function witReplies(uid: string, message: string) {
-  console.log('Bot "Witty" will reply');
+  console.log(`Bot "Witty" will reply to message [${message}]`);
 
-  const botRef = admin.database().ref(`/bots/witty/config/phases/social/unreadMessages`);
-  const bot = await botRef.once('value');
+  const wittyConfigRef = admin.database().ref(`/bots/witty/config`);
+
+  wittyConfigRef.set({
+
+    messages: {
+      responsetime: {
+        mean: 7 * 60, // 7 minutes
+        variance: 1 * 60, // 1 minute
+        standard_deviation: 3 * 60, // 3 minutes
+      }
+    }
+
+  }).then(() => {
+    console.log(`Bot witty reconfigurated.`);
+  });
 
 
-  const mean = bot.config.messages.responetime.mean;
-  const variance = bot.config.messages.responetime.variance;
-  const standard_derivation = bot.config.messages.responetime.standard_deviation;
+  const wittyConfig = await wittyConfigRef.once('value');
+  console.log(wittyConfig.val());
+
+  const mean = wittyConfig.val().messages.responsetime.mean;
+  const variance = wittyConfig.val().messages.responsetime.variance;
+  const standard_derivation = wittyConfig.val().messages.responsetime.standard_deviation;
 
   const distribution = gaussian(mean, variance, standard_derivation);
-  var sample = distribution.ppf(Math.random());
+  const delay = distribution.ppf(Math.random());
+
+  //console.log(`Responding in: ${parseInt(sample, 1)}`);
 
   await client.converse(`${uid}`, message, {}).then((res) => {
-    // console.log('Response from Witty:');
-    // console.log(JSON.stringify(res));
+    console.log('Response from Witty:');
+    console.log(JSON.stringify(res));
 
     const reply = res;
 
     if (reply !== null && reply !== undefined) {
+      console.log('before timeout', moment().valueOf());
 
-      setTimeout(function () {
-        admin.database().ref(`/user/${uid}/conversation/`).push({
-          text: reply.msg,
-          author: 'witty',
-          type: 'bot',
-          alias: 'Witty',
-          timestamp: moment().valueOf(),
-        });
-      }, 3000);
+      queueMessage(uid, delay, {
+        text: reply.msg,
+        author: 'witty',
+        type: 'bot',
+        alias: 'Witty',
+        timestamp: moment().valueOf(),
+      });
 
     }
 
@@ -155,6 +220,7 @@ async function cleverReplies(uid: string, message: string) {
 
   });
 }
+
 
 export let reply = functions.database.ref(`/user/{uid}/conversation/{cuid}`).onWrite(async event => {
   console.log(event);
@@ -210,9 +276,9 @@ export let reply = functions.database.ref(`/user/{uid}/conversation/{cuid}`).onW
           config: {
             messages: {
               responsetime: {
-                mean: 10000,
-                variance: 2000,
-                standard_deviation: 5000,
+                mean: 7000,
+                variance: 1000,
+                standard_deviation: 3000,
               }
             }
           }
@@ -248,7 +314,53 @@ export let reply = functions.database.ref(`/user/{uid}/conversation/{cuid}`).onW
 
 });
 
+/*
+ export let hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => {
+ console.log('This job is ran every hour!');
+ });
+ */
 
-export let hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => {
-  console.log('This job is ran every hour!');
+export let message_queue = functions.pubsub.topic('minute-tick').onPublish(async (event) => {
+  const queueRef = admin.database().ref(`/message_queue`);
+  queueRef.orderByChild('timestamp');
+  queueRef.endAt(moment().valueOf());
+
+  queueRef.once('value', async function (snapshot: DataSnapshot) {
+    /*
+     snapshot.val().forEach((childSnapshot) => {
+     // key will be "ada" the first time and "alan" the second time
+     const key = childSnapshot.key;
+
+     // childData will be the actual contents of the child
+     const value = childSnapshot.val();
+     console.log(`key ${key} value ${value}`);
+     });
+     */
+
+    const messages = snapshot.val();
+    //console.log(messages);
+
+
+    for (const key in messages) {
+      if (messages.hasOwnProperty(key)) {
+        const message = messages[key];
+        //console.log(message);
+        console.log(key);
+
+        if (moment(message.timestamp).isBefore(moment())) {
+          console.log('send message');
+          await sendMessage(message.uid, message.message);
+
+          const messageRef = admin.database().ref(`/message_queue/${key}`);
+          messageRef.remove();
+        }
+      }
+    }
+
+
+  });
+
+
+  //sendMessage(uid, message);
+
 });

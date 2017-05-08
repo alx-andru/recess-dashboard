@@ -60,7 +60,6 @@
       padding: 1rem;
       height: 5rem;
 
-
       .field {
         @include flex('row');
         justify-content: flex-start;
@@ -78,7 +77,7 @@
 
       .submit {
         padding: 0 0 0 1rem;
-        cursor:pointer;
+        cursor: pointer;
       }
 
     }
@@ -150,6 +149,7 @@
 
     .bots, .participants {
       width: 100%;
+      max-height: 50%;
       overflow-y: scroll;
 
       & .bot, & .user {
