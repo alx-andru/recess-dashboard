@@ -129,10 +129,8 @@ async function buddyReplies(uid: string, message: string) {
 async function witReplies(uid: string, message: string) {
   console.log(`Bot "Witty" will reply to message [${message}]`);
 
-  const wittyConfigRef = admin.database().ref(`/bots/witty/config`);
-
-  wittyConfigRef.set({
-
+  const config = {
+    version: 1,
     messages: {
       responsetime: {
         mean: 7 * 60, // 7 minutes
@@ -141,12 +139,22 @@ async function witReplies(uid: string, message: string) {
       }
     }
 
-  }).then(() => {
-    console.log(`Bot witty reconfigurated.`);
-  });
+  };
 
+  const wittyConfigRef = admin.database().ref(`/bots/witty/config`);
+  let wittyConfig = await wittyConfigRef.once('value');
 
-  const wittyConfig = await wittyConfigRef.once('value');
+  // check if config has to be overwritten
+  if (wittyConfig.version < config.version) {
+
+    wittyConfigRef.set(config).then(() => {
+      console.log(`Bot witty reconfigurated.`);
+    });
+
+    wittyConfig = await wittyConfigRef.once('value');
+
+  }
+
   console.log(wittyConfig.val());
 
   const mean = wittyConfig.val().messages.responsetime.mean;
@@ -174,6 +182,9 @@ async function witReplies(uid: string, message: string) {
         alias: 'Witty',
         timestamp: moment().valueOf(),
       });
+
+      // set timestamp
+      admin.database().ref(`/user/${uid}/lastMessage`).set(moment().valueOf());
 
     }
 
@@ -223,7 +234,7 @@ async function cleverReplies(uid: string, message: string) {
 
 
 export let reply = functions.database.ref(`/user/{uid}/conversation/{cuid}`).onWrite(async event => {
-  console.log(event);
+  //console.log(event);
 
   if (event.params.cuid === 'placeholder') {
     return 'placeholder, do nothing.';
@@ -256,6 +267,7 @@ export let reply = functions.database.ref(`/user/{uid}/conversation/{cuid}`).onW
         }).then(() => {
           console.log(`Bot ${bid} initialized.`);
         });
+
       }
 
       return buddyReplies(event.params.uid, message.text);
@@ -320,6 +332,13 @@ export let reply = functions.database.ref(`/user/{uid}/conversation/{cuid}`).onW
  });
  */
 
+export let morning_queue = functions.pubsub.topic('minute-tick').onPublish(async (event) => {
+  const noMessageYetRef = admin.database().ref(`/users`).orderByChild('lastMessage').endAt(moment().startOf('day').valueOf());
+  const noMessagesYet = noMessageYetRef.once('value');
+  console.log(noMessagesYet);
+
+});
+
 export let message_queue = functions.pubsub.topic('minute-tick').onPublish(async (event) => {
   const queueRef = admin.database().ref(`/message_queue`);
   queueRef.orderByChild('timestamp');
@@ -344,23 +363,20 @@ export let message_queue = functions.pubsub.topic('minute-tick').onPublish(async
     for (const key in messages) {
       if (messages.hasOwnProperty(key)) {
         const message = messages[key];
-        //console.log(message);
-        console.log(key);
 
         if (moment(message.timestamp).isBefore(moment())) {
-          console.log('send message');
+          console.log(`Sending message[${message.message}] to ${message.uid}`);
           await sendMessage(message.uid, message.message);
 
           const messageRef = admin.database().ref(`/message_queue/${key}`);
           messageRef.remove();
         }
+
       }
     }
 
 
   });
 
-
-  //sendMessage(uid, message);
 
 });
