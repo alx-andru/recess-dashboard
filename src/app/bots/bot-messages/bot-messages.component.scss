@@ -1,0 +1,70 @@
+@import '../../../scss/colors';
+@import '../../../scss/mixins';
+@import '../../../scss/ui-components';
+
+:host {
+  @include flex();
+  justify-content: flex-start;
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+}
+
+.wrap {
+  @include flex('row');
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  padding: 1rem 0 1rem 1rem;
+
+}
+
+.tile {
+  width: 100%;
+}
+
+.messages {
+  .details {
+    width: 100%;
+    text-align: left;
+    table {
+      width: 100%;
+      margin-top: 1rem;
+      thead {
+        font-size: 0.8rem;
+      }
+      tbody {
+        font-size: 1rem;
+      }
+    }
+
+    .new {
+      width: 100%;
+      @include flex('row');
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      .category {
+        padding: 0 5rem;
+      }
+
+      .message {
+        width: 100%;
+        margin: 0 1rem;
+        padding: 0.25rem;
+
+      }
+    }
+
+  }
+  .message {
+    width: 100%;
+    min-width: 30rem;
+    @include flex('row');
+    & input {
+      width: 100%;
+      padding: 0.25rem;
+    }
+
+  }
+}

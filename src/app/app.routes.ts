@@ -6,6 +6,7 @@ import {LoginComponent} from './login/login.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {BotsComponent} from './bots/bots.component';
 import {BotDetailsComponent} from './bots/bot-details/bot-details.component';
+import {BotMessagesComponent} from './bots/bot-messages/bot-messages.component';
 
 import {UsersComponent} from './users/users.component';
 import {UserDetailsComponent} from './users/user-details/user-details.component';
@@ -30,6 +31,10 @@ export const routes: Routes = [
         path: 'bots',
         component: BotsComponent,
         children: [
+          {
+            path: '',
+            component: BotMessagesComponent,
+          },
           {
             path: ':bid',
             component: BotDetailsComponent,

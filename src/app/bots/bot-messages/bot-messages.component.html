@@ -1,0 +1,77 @@
+<div class="wrap">
+
+  <div class="tile messages">
+
+
+    <header>
+      <i class="material-icons">forum</i>
+      <span>Messages</span>
+    </header>
+    <p>
+      Add and edit messages for chat bots.
+    </p>
+
+    <section class="details">
+
+      <div class="new">
+        <select name="type" class="type" [(ngModel)]="msg.type">
+          <option *ngFor="let type of types" [value]="type.value">
+            {{type.display}}
+          </option>
+        </select>
+
+        <select name="category" class="category" [(ngModel)]="msg.category">
+          <option *ngFor="let category of categories" [value]="category.value">
+            {{category.display}}
+          </option>
+        </select>
+
+        <input class="message" type="text" [(ngModel)]="msg.message" value="">
+
+        <div (click)="addMessage()">
+          <i class="material-icons">add_circle_outline</i>
+        </div>
+      </div>
+
+
+      <table>
+        <thead>
+        <tr>
+          <th>Type</th>
+          <th>Category</th>
+          <th>Message</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="" *ngFor="let message of messages| async">
+          <td class="type">
+            <select name="type" [(ngModel)]="message.type">
+              <option *ngFor="let type of types" [value]="type.value">
+                {{type.display}}
+              </option>
+            </select>
+          </td>
+          <td class="category">
+            <select name="category" [(ngModel)]="message.category">
+              <option *ngFor="let category of categories" [value]="category.value">
+                {{category.display}}
+              </option>
+            </select>
+          </td>
+          <td class="message">
+            <input type="text" #msg
+                   [value]="message.message"
+                   (blur)="updateMessage(message.$key, msg.value)"/>
+          </td>
+        </tr>
+
+        </tbody>
+      </table>
+
+    </section>
+
+  </div>
+
+</div>
+
+

@@ -15,19 +15,21 @@ const request = require('request');
 
 admin.initializeApp(functions.config().firebase);
 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 // initialize RecastAi Bot Buddy
 const buddy = new recastai.Client(environment.recast, 'en');
 
 
 async function sendPushNotification(uid: string, message: string) {
   const tokenSnapshot = await admin.database().ref(`/users/${uid}/pushToken`).once('value');
-  //console.log(`tokenSnapshot: ${tokenSnapshot.val()}`);
 
 
   // get push token Notification details.
   if (tokenSnapshot !== null && tokenSnapshot !== undefined) {
     const token = tokenSnapshot.val();
-    //console.log(`Push token: ${token}`);
 
     const badgeRef = admin.database().ref(`/user/${uid}/config/phases/social/unreadMessages`);
     let badge = await badgeRef.once('value');
@@ -70,6 +72,9 @@ async function sendMessage(uid: string, message: any) {
   console.log('after timeout', moment().valueOf());
 
   await admin.database().ref(`/user/${uid}/conversation/`).push(message);
+
+  // set timestamp
+  admin.database().ref(`/users/${uid}/lastMessage`).set(moment().valueOf());
 }
 
 async function buddyReplies(uid: string, message: string) {
@@ -100,15 +105,15 @@ async function buddyReplies(uid: string, message: string) {
 }
 
 /*
- — Each time going to send a message, delay by time X, where normally distributed:
+ [x] Each time going to send a message, delay by time X, where normally distributed:
  — X has mean time = 10 min
  — s.d. = 5 min
  — Can tweak these numbers/distribution based on feedback
 
 
- — Each morning at 9 am, send motivational message
+ [x] Each morning at 9 am, send motivational message
  — If haven’t received a message yet that day
- — 50% chance to send
+ — 50% chance to send -> should be send every day
  — Apply delay as above w/ 2x mean and s.d.?
 
 
@@ -164,7 +169,6 @@ async function witReplies(uid: string, message: string) {
   const distribution = gaussian(mean, variance, standard_derivation);
   const delay = distribution.ppf(Math.random());
 
-  //console.log(`Responding in: ${parseInt(sample, 1)}`);
 
   await client.converse(`${uid}`, message, {}).then((res) => {
     console.log('Response from Witty:');
@@ -183,8 +187,6 @@ async function witReplies(uid: string, message: string) {
         timestamp: moment().valueOf(),
       });
 
-      // set timestamp
-      admin.database().ref(`/user/${uid}/lastMessage`).set(moment().valueOf());
 
     }
 
@@ -234,7 +236,6 @@ async function cleverReplies(uid: string, message: string) {
 
 
 export let reply = functions.database.ref(`/user/{uid}/conversation/{cuid}`).onWrite(async event => {
-  //console.log(event);
 
   if (event.params.cuid === 'placeholder') {
     return 'placeholder, do nothing.';
@@ -326,16 +327,46 @@ export let reply = functions.database.ref(`/user/{uid}/conversation/{cuid}`).onW
 
 });
 
-/*
- export let hourly_job = functions.pubsub.topic('hourly-tick').onPublish((event) => {
- console.log('This job is ran every hour!');
- });
- */
 
-export let morning_queue = functions.pubsub.topic('minute-tick').onPublish(async (event) => {
+const morningMessages = [
+  'Gooooood Morning!',
+  'New day, new challenge!'
+];
+
+
+export let morning_queue = functions.pubsub.topic('morning-tick').onPublish(async (event) => {
+
   const noMessageYetRef = admin.database().ref(`/users`).orderByChild('lastMessage').endAt(moment().startOf('day').valueOf());
-  const noMessagesYet = noMessageYetRef.once('value');
-  console.log(noMessagesYet);
+  let noMessagesYet = await noMessageYetRef.once('value');
+  noMessagesYet = noMessagesYet.val();
+
+  if (noMessagesYet) {
+    Object.keys(noMessagesYet).forEach(key => {
+      const value = noMessagesYet[key];
+      console.log(value);
+      console.log(value.uid);
+
+      if (value && value.uid) {
+        const selectMessage = getRandomInt(0, morningMessages.length - 1);
+        const morningMessage = {
+          text: morningMessages[selectMessage],
+          author: 'morning',
+          type: 'function',
+          alias: 'GoodMorning',
+          timestamp: moment().valueOf(),
+        };
+
+        console.log(morningMessage);
+
+        queueMessage(value.uid, 0, morningMessage);
+      }
+
+
+    });
+
+    console.log(Object.keys(noMessagesYet).length);
+  }
+
 
 });
 
@@ -345,19 +376,8 @@ export let message_queue = functions.pubsub.topic('minute-tick').onPublish(async
   queueRef.endAt(moment().valueOf());
 
   queueRef.once('value', async function (snapshot: DataSnapshot) {
-    /*
-     snapshot.val().forEach((childSnapshot) => {
-     // key will be "ada" the first time and "alan" the second time
-     const key = childSnapshot.key;
-
-     // childData will be the actual contents of the child
-     const value = childSnapshot.val();
-     console.log(`key ${key} value ${value}`);
-     });
-     */
 
     const messages = snapshot.val();
-    //console.log(messages);
 
 
     for (const key in messages) {

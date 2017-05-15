@@ -35,6 +35,7 @@ import {ExportComponent} from './export/export.component';
 import {ButtonComponent} from './ui/button/button.component';
 import {environment} from '../environments/environment';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
+import { BotMessagesComponent } from './bots/bot-messages/bot-messages.component';
 
 
 const firebaseConfig = {
@@ -66,6 +67,8 @@ const firebaseConfig = {
     AliasPipe,
     ExportComponent,
     ButtonComponent,
+    BotMessagesComponent
+
   ],
   imports: [
     BrowserModule,

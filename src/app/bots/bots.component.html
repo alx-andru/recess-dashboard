@@ -1,11 +1,11 @@
-
-
 <section class="content">
   <div class="list">
     <app-bot-list></app-bot-list>
   </div>
   <div class="details">
     <app-breadcrumbs [title]="title"></app-breadcrumbs>
-    <router-outlet></router-outlet>
+    {{showMessages}}
+    <div *ngIf="showMessages">dfa</div>
+    <router-outlet (isDetail)="handleDetail($event)"></router-outlet>
   </div>
 </section>

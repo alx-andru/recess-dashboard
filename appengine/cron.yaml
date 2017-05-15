@@ -3,3 +3,8 @@ cron:
   url: /publish/minute-tick
   schedule: every 1 mins
 
+- description: Push a "tick" onto pubsub every minute for an hour starting at 9am
+  url: /publish/morning-tick
+  schedule: every 1 mins from 09:00 to 11:00
+
+
