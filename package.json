@@ -31,6 +31,7 @@
     "d3": "^4.8.0",
     "firebase": "^3.7.4",
     "moment": "^2.18.1",
+    "moment-timezone": "^0.5.13",
     "rxjs": "^5.1.0",
     "underscore": "^1.8.3",
     "zone.js": "^0.8.4"

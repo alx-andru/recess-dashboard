@@ -6,6 +6,7 @@
     "firebase-functions": "^0.5",
     "gaussian": "^1.1.0",
     "moment": "^2.17.1",
+    "moment-timezone": "^0.5.13",
     "node-wit": "^4.2.0",
     "recastai": "^2.3.0",
     "request": "^2.81.0"

@@ -2,9 +2,21 @@ cron:
 - description: Push a "tick" onto pubsub every minute
   url: /publish/minute-tick
   schedule: every 1 mins
+  timezone: America/Toronto
 
 - description: Push a "tick" onto pubsub every minute for an hour starting at 9am
   url: /publish/morning-tick
   schedule: every 1 mins from 09:00 to 11:00
+  timezone: America/Toronto
+
+- description: Push a "tick" onto pubsub every minute for an hour starting at 2pm
+  url: /publish/afternoon-tick
+  schedule: every 1 mins from 14:00 to 15:00
+  timezone: America/Toronto
+
+- description: Push a "tick" onto pubsub every minute for an hour starting at 7pm
+  url: /publish/evening-tick
+  schedule: every 1 mins from 19:00 to 20:00
+  timezone: America/Toronto
 
 

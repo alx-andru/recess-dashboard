@@ -1,10 +1,13 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import * as moment from 'moment';
+
+import * as moment from 'moment-timezone';
 import * as recastai from 'recastai';
 
 import {environment} from './environments/environment';
 import * as gaussian from 'gaussian';
+moment.tz.setDefault('America/Toronto');
+
 import DataSnapshot = admin.database.DataSnapshot;
 
 const {Wit, log} = require('node-wit');
@@ -14,6 +17,9 @@ const request = require('request');
 
 
 admin.initializeApp(functions.config().firebase);
+
+console.log(`New deployment`, moment().format('DD.MM.YY HH:mm'));
+
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -169,28 +175,87 @@ async function witReplies(uid: string, message: string) {
   const distribution = gaussian(mean, variance, standard_derivation);
   const delay = distribution.ppf(Math.random());
 
+  // filter messages if custom reply necessary
+  // if intent == progress: "You can view my progress by pulling down the activity screen"
+  // if intent == steps: "You can view my steps by pulling down the activity screen"
+  // if intent == hours_active: "You can view my active hours by pulling down the activity screen"
+  // if intent == goal: "You can view my goal by pulling down the activity screen"
 
-  await client.converse(`${uid}`, message, {}).then((res) => {
+  await client.converse(`${uid}`, message, {}).then(async (res) => {
     console.log('Response from Witty:');
     console.log(JSON.stringify(res));
 
     const reply = res;
 
     if (reply !== null && reply !== undefined) {
-      console.log('before timeout', moment().valueOf());
 
-      queueMessage(uid, delay, {
-        text: reply.msg,
-        author: 'witty',
-        type: 'bot',
-        alias: 'Witty',
-        timestamp: moment().valueOf(),
-      });
+      // Steps
+      if ('You can view my steps by pulling down the activity screen' === reply.msg) {
+        let steps = (await admin.database().ref(`/user/${uid}/data/ui/buddy/steps/${moment().format('YYYY-MM-DD')}`).once('value')).val();
+        if (steps !== undefined && steps < 1) {
+          steps = 100;
+        }
+        const replyMsg = `I already walked about ${steps} steps`;
+
+        queueMessage(uid, delay, {
+          text: replyMsg,
+          author: 'witty',
+          type: 'bot',
+          alias: 'Witty',
+          timestamp: moment().valueOf(),
+        });
+
+      } else if ('You can view my active hours by pulling down the activity screen' === reply.msg) {
+        const active =
+          (await admin.database().ref(`/user/${uid}/data/ui/buddy/activity/${moment().format('YYYY-MM-DD')}`)
+            .once('value')).val();
+
+        let activity = 1;
+        if (active !== undefined && active.totalHours > 1) {
+          activity = active.totalHours;
+        }
+        const replyMsg = `I've been active for about ${activity} hours`;
+
+        queueMessage(uid, delay, {
+          text: replyMsg,
+          author: 'witty',
+          type: 'bot',
+          alias: 'Witty',
+          timestamp: moment().valueOf(),
+        });
+
+      } else if ('You can view my goal by pulling down the activity screen' === reply.msg) {
+        const goals =
+          (await admin.database().ref(`/user/${uid}/config/phases/goals/settings`)
+            .once('value')).val();
+
+
+        const replyMsg = `I'm trying to be active for ${goals.activity} hours a day and doing ${goals.steps} steps`;
+
+        queueMessage(uid, delay, {
+          text: replyMsg,
+          author: 'witty',
+          type: 'bot',
+          alias: 'Witty',
+          timestamp: moment().valueOf(),
+        });
+
+      } else {
+        queueMessage(uid, delay, {
+          text: reply.msg,
+          author: 'witty',
+          type: 'bot',
+          alias: 'Witty',
+          timestamp: moment().valueOf(),
+        });
+
+      }
 
 
     }
 
   }).catch(console.error);
+
 
 }
 
@@ -327,14 +392,24 @@ export let reply = functions.database.ref(`/user/{uid}/conversation/{cuid}`).onW
 
 });
 
+export let afternoon_queue = functions.pubsub.topic('afternoon-tick').onPublish(async (event) => {
+  console.log('afternoon tick');
+  const afternoonMessages = (await admin.database().ref(`/messages`).orderByChild('category').equalTo('afternoon').once('value')).val();
+  console.log(afternoonMessages);
 
-const morningMessages = [
-  'Gooooood Morning!',
-  'New day, new challenge!'
-];
+});
+
+export let evening_queue = functions.pubsub.topic('evening-tick').onPublish(async (event) => {
+  console.log('evening tick');
+  const eveningMessages = (await admin.database().ref(`/messages`).orderByChild('category').equalTo('evening').once('value')).val();
+  console.log(eveningMessages);
+
+});
 
 
 export let morning_queue = functions.pubsub.topic('morning-tick').onPublish(async (event) => {
+
+  const morningMessages = await admin.database().ref(`/messages`).orderByChild('category').equalTo('morning').once('value');
 
   const noMessageYetRef = admin.database().ref(`/users`).orderByChild('lastMessage').endAt(moment().startOf('day').valueOf());
   let noMessagesYet = await noMessageYetRef.once('value');
@@ -343,22 +418,25 @@ export let morning_queue = functions.pubsub.topic('morning-tick').onPublish(asyn
   if (noMessagesYet) {
     Object.keys(noMessagesYet).forEach(key => {
       const value = noMessagesYet[key];
-      console.log(value);
-      console.log(value.uid);
 
-      if (value && value.uid) {
-        const selectMessage = getRandomInt(0, morningMessages.length - 1);
-        const morningMessage = {
-          text: morningMessages[selectMessage],
-          author: 'morning',
-          type: 'function',
-          alias: 'GoodMorning',
-          timestamp: moment().valueOf(),
-        };
+      const chanceToSend = getRandomInt(0, 100);
+      if (chanceToSend >= 50) {
 
-        console.log(morningMessage);
+        if (value && value.uid) {
+          const randomNumber = getRandomInt(0, morningMessages.length - 1);
+          const morningMessage = {
+            text: morningMessages[randomNumber],
+            author: 'morning',
+            type: 'function',
+            alias: 'GoodMorning',
+            timestamp: moment().valueOf(),
+          };
 
-        queueMessage(value.uid, 0, morningMessage);
+          console.log(morningMessage);
+
+          queueMessage(value.uid, 0, morningMessage);
+        }
+
       }
 
 
@@ -371,14 +449,16 @@ export let morning_queue = functions.pubsub.topic('morning-tick').onPublish(asyn
 });
 
 export let message_queue = functions.pubsub.topic('minute-tick').onPublish(async (event) => {
+  const now = moment();
   const queueRef = admin.database().ref(`/message_queue`);
   queueRef.orderByChild('timestamp');
-  queueRef.endAt(moment().valueOf());
+  queueRef.endAt(now.valueOf());
+
+  console.log(`Looking for messages older than ${now.format('DD.MM.YYYY HH:mm')}`);
 
   queueRef.once('value', async function (snapshot: DataSnapshot) {
 
     const messages = snapshot.val();
-
 
     for (const key in messages) {
       if (messages.hasOwnProperty(key)) {
