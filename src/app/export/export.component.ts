@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AngularFire} from 'angularfire2';
+import {AngularFireDatabase} from 'angularfire2/database';
 
 @Component({
   selector: 'app-export',
@@ -15,12 +15,12 @@ export class ExportComponent implements OnInit {
 
   public data: any;
 
-  constructor(public af: AngularFire) {
+  constructor(public db: AngularFireDatabase) {
   }
 
   export() {
     console.log('exporting');
-    this.af.database.object('/', {preserveSnapshot: false}).subscribe(snapshot => {
+    this.db.object('/', {preserveSnapshot: false}).subscribe(snapshot => {
       console.log('exported');
       this.data = snapshot;
       this.saveData(snapshot, 'export.json');

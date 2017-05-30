@@ -1,6 +1,8 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
-import {AngularFire, AuthProviders} from 'angularfire2';
 import {Router} from '@angular/router';
+import {AngularFireDatabase} from 'angularfire2/database';
+import {AngularFireAuth} from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-login',
@@ -23,9 +25,9 @@ export class LoginComponent implements OnInit {
     console.log('Login init');
   }
 
-  constructor(public af: AngularFire, private router: Router) {
+  constructor(public afAuth: AngularFireAuth, private router: Router) {
     this.page = 'login';
-    this.af.auth.subscribe(user => {
+    this.afAuth.auth.onAuthStateChanged( (user) => {
       if (user) {
         // user logged in
         this.user = user;
@@ -38,13 +40,12 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.af.auth.login({
-      provider: AuthProviders.Google
-    });
+    this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+
   }
 
   logout() {
-    this.af.auth.logout();
+    this.afAuth.auth.signOut();
   }
 
 }

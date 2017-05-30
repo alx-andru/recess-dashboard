@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AngularFireDatabase, FirebaseListObservable} from 'angularfire2';
+import {AngularFireDatabase, FirebaseListObservable} from 'angularfire2/database';
 
 @Component({
   selector: 'app-bot-messages',
@@ -64,16 +64,18 @@ export class BotMessagesComponent implements OnInit {
     };
   }
 
-  updateMessage(key: string, message: string) {
-    if (message.length === 0) {
-      this.messages.remove(key);
+  updateMessage(message) {
+    console.log(message);
+    if (message.message.length === 0) {
+      this.messages.remove(message.$key);
     } else {
-      this.messages.update(key, {
-        message: message,
-        type: 'engagement',
-        category: 'morning'
+      this.messages.update(message.$key, {
+        message: message.message,
+        type: message.type,
+        category: message.category,
       });
     }
+
 
   }
 

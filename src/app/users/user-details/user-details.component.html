@@ -1,10 +1,24 @@
 <div class="details">
 
-  <div class="steps">
-    <app-steps [uid]="uid"></app-steps>
-  </div>
 
   <div class="wrap">
+
+    <div class="tile">
+
+      <header>
+        <i class="material-icons">timeline</i>
+        <span>User Steps</span>
+      </header>
+
+      <section class="details">
+
+        <div *ngFor="let step of usersteps | async">
+          {{step.$key | amDateFormat:'DD.MM.'}} {{step.$value}}
+        </div>
+
+      </section>
+
+    </div>
 
     <div class="tile">
       <header>
@@ -27,7 +41,7 @@
         </div>
         <div class="detail">
           <div class="label">Created at</div>
-          <div class="value">{{(user | async)?.createdAt | date:'short'}}</div>
+          <div class="value">{{(user | async)?.createdAt | amDateFormat:'DD.MM.YYYY HH:mm'}}</div>
         </div>
         <div class="detail">
           <div class="label">Mode</div>
@@ -44,6 +58,10 @@
         <div class="detail">
           <div class="label">Unread Messages</div>
           <div class="value">{{(config | async)?.phases.social.unreadMessages }}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Last Message</div>
+          <div class="value">{{(user | async)?.lastMessage | amDateFormat: 'DD.MM.YY HH:mm'}}</div>
         </div>
 
 

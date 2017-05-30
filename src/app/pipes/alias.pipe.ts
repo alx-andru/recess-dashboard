@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {AngularFire} from 'angularfire2';
+import {AngularFireDatabase} from 'angularfire2/database';
 
 @Pipe({
   name: 'alias',
@@ -10,7 +10,7 @@ export class AliasPipe implements PipeTransform {
 
   private alias: string;
 
-  constructor(private af: AngularFire) {
+  constructor(private db: AngularFireDatabase) {
   }
 
   transform(value: any, args?: any): any {
@@ -21,7 +21,7 @@ export class AliasPipe implements PipeTransform {
       // pick from cache
       return this.alias;
     } else {
-      this.af.database.object(`/users/${value}/alias`).subscribe(alias => {
+      this.db.object(`/users/${value}/alias`).subscribe(alias => {
         this.alias = alias.$value;
         return this.alias;
       });

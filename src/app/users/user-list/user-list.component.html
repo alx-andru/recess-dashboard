@@ -1,10 +1,8 @@
-<div class="filter">
-  <i class="material-icons">filter_list</i>
+<app-filter (onSearch)="search($event)"></app-filter>
 
-</div>
 <div class="list">
 
-  <div class="user" *ngFor="let user of users"
+  <div class="user" *ngFor="let user of filteredUsers"
        [routerLink]="['/users', user.key]"
        [routerLinkActive]="['is-active']">
 

@@ -79,7 +79,7 @@ async function sendMessage(uid: string, message: any) {
 
   await admin.database().ref(`/user/${uid}/conversation/`).push(message);
 
-  // set timestamp
+  // set lastmessage
   admin.database().ref(`/users/${uid}/lastMessage`).set(moment().valueOf());
 }
 
@@ -153,7 +153,7 @@ async function witReplies(uid: string, message: string) {
   };
 
   const wittyConfigRef = admin.database().ref(`/bots/witty/config`);
-  let wittyConfig = await wittyConfigRef.once('value');
+  let wittyConfig = (await wittyConfigRef.once('value')).val();
 
   // check if config has to be overwritten
   if (wittyConfig.version < config.version) {
@@ -162,17 +162,17 @@ async function witReplies(uid: string, message: string) {
       console.log(`Bot witty reconfigurated.`);
     });
 
-    wittyConfig = await wittyConfigRef.once('value');
+    wittyConfig = (await wittyConfigRef.once('value')).val();
 
   }
 
-  console.log(wittyConfig.val());
+  console.log(wittyConfig);
 
-  const mean = wittyConfig.val().messages.responsetime.mean;
-  const variance = wittyConfig.val().messages.responsetime.variance;
-  const standard_derivation = wittyConfig.val().messages.responsetime.standard_deviation;
-
+  const mean = wittyConfig.messages.responsetime.mean;
+  const variance = wittyConfig.messages.responsetime.variance;
+  const standard_derivation = wittyConfig.messages.responsetime.standard_deviation;
   const distribution = gaussian(mean, variance, standard_derivation);
+
   const delay = distribution.ppf(Math.random());
 
   // filter messages if custom reply necessary
@@ -280,8 +280,8 @@ async function cleverReplies(uid: string, message: string) {
   request(cleverbotApi, (error, response, body) => {
 
     body = JSON.parse(body);
-    console.log(body);
-    console.log(body.output);
+    // console.log(body);
+    // console.log(body.output);
 
 
     admin.database().ref(`/user/${uid}/conversation/`).push({
@@ -299,6 +299,10 @@ async function cleverReplies(uid: string, message: string) {
   });
 }
 
+export let remove = functions.database.ref(`/users/{uid}/deleted`).onWrite(async event => {
+  console.log(event.data.val());
+
+});
 
 export let reply = functions.database.ref(`/user/{uid}/conversation/{cuid}`).onWrite(async event => {
 
@@ -350,7 +354,7 @@ export let reply = functions.database.ref(`/user/{uid}/conversation/{cuid}`).onW
           alias: 'Witty',
           timestamp: moment().valueOf(),
           users: {empty: true},
-          description: 'Using Wit.ai with personality',
+          description: 'Using Wit.ai with personality.',
           config: {
             messages: {
               responsetime: {
@@ -393,60 +397,85 @@ export let reply = functions.database.ref(`/user/{uid}/conversation/{cuid}`).onW
 });
 
 export let afternoon_queue = functions.pubsub.topic('afternoon-tick').onPublish(async (event) => {
-  console.log('afternoon tick');
-  const afternoonMessages = (await admin.database().ref(`/messages`).orderByChild('category').equalTo('afternoon').once('value')).val();
-  console.log(afternoonMessages);
+  // console.log('afternoon tick');
+  // const afternoonMessages = (await admin.database().ref(`/messages`).orderByChild('category').equalTo('afternoon').once('value')).val();
+  // console.log(afternoonMessages);
+  await engage('afternoon');
 
 });
 
 export let evening_queue = functions.pubsub.topic('evening-tick').onPublish(async (event) => {
-  console.log('evening tick');
-  const eveningMessages = (await admin.database().ref(`/messages`).orderByChild('category').equalTo('evening').once('value')).val();
-  console.log(eveningMessages);
+  // console.log('evening tick');
+  // const eveningMessages = (await admin.database().ref(`/messages`).orderByChild('category').equalTo('evening').once('value')).val();
+  // console.log(eveningMessages);
+  await engage('evening');
 
 });
 
 
 export let morning_queue = functions.pubsub.topic('morning-tick').onPublish(async (event) => {
 
-  const morningMessages = await admin.database().ref(`/messages`).orderByChild('category').equalTo('morning').once('value');
+  await engage('morning');
+
+});
+
+
+async function engage(category: string) {
+  let morningMessages = await admin.database().ref(`/messages`).orderByChild('category').equalTo(category).once('value');
+  morningMessages = morningMessages.val();
 
   const noMessageYetRef = admin.database().ref(`/users`).orderByChild('lastMessage').endAt(moment().startOf('day').valueOf());
   let noMessagesYet = await noMessageYetRef.once('value');
   noMessagesYet = noMessagesYet.val();
+
+
+  const messageKeys = Object.keys(morningMessages);
+
 
   if (noMessagesYet) {
     Object.keys(noMessagesYet).forEach(key => {
       const value = noMessagesYet[key];
 
       const chanceToSend = getRandomInt(0, 100);
-      if (chanceToSend >= 50) {
+      if (chanceToSend >= 0) {
 
         if (value && value.uid) {
-          const randomNumber = getRandomInt(0, morningMessages.length - 1);
+          const randomNumber = getRandomInt(0, messageKeys.length - 1);
+          const randomKey = messageKeys[randomNumber];
+
+          /*
+            console.log('-----');
+            console.log(messageKeys);
+            console.log(randomNumber);
+            console.log(morningMessages);
+            console.log(randomKey);
+            console.log('+++++');
+          */
+
           const morningMessage = {
-            text: morningMessages[randomNumber],
-            author: 'morning',
+            text: morningMessages[randomKey].message,
+            author: category,
             type: 'function',
-            alias: 'GoodMorning',
+            alias: category.charAt(0).toUpperCase() + category.slice(1), // first letter uppercase
             timestamp: moment().valueOf(),
           };
 
           console.log(morningMessage);
 
           queueMessage(value.uid, 0, morningMessage);
+
+          // mark user as last message send
+          admin.database().ref(`/users/${value.uid}/lastMessage`).set(moment().valueOf());
+
         }
 
       }
-
 
     });
 
     console.log(Object.keys(noMessagesYet).length);
   }
-
-
-});
+}
 
 export let message_queue = functions.pubsub.topic('minute-tick').onPublish(async (event) => {
   const now = moment();

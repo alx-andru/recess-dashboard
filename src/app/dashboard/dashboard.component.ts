@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {AngularFire} from 'angularfire2';
+import {AngularFireDatabase} from 'angularfire2/database';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,9 +11,9 @@ export class DashboardComponent implements OnInit {
   title: string;
   newBot: any;
 
-  constructor(private af: AngularFire) {
+  constructor(private db: AngularFireDatabase) {
     this.title = 'Dashboard';
-    this.newBot = this.af.database.object(`/bots/smarty`);
+    this.newBot = this.db.object(`/bots/smarty`);
 
   }
 

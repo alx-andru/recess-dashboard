@@ -4,9 +4,7 @@
   </div>
   <div class="tools">
 
-    <span class="photo">
-      <img src="{{user.auth.photoURL}}">
-    </span>
+    <span (click)="signOut()" class="photo"><img src="{{ (user | async)?.photoURL }}"></span>
 
   </div>
 

@@ -1,9 +1,8 @@
-<div class="filter">
-  <i class="material-icons">filter_list</i>
-</div>
+<app-filter (onSearch)="search($event)" [isDark]="true" ></app-filter>
+
 <div class="list">
 
-  <div class="bot" *ngFor="let bot of bots"
+  <div class="bot" *ngFor="let bot of filteredBots"
        [routerLink]="['/bots', bot.key]"
        [routerLinkActive]="['is-active']">
 

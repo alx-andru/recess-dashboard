@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AngularFire, FirebaseListObservable} from 'angularfire2';
+import {AngularFireDatabase} from 'angularfire2/database';
 
 @Component({
   selector: 'app-bot-list',
@@ -9,15 +9,17 @@ import {AngularFire, FirebaseListObservable} from 'angularfire2';
 export class BotListComponent implements OnInit, OnDestroy {
 
   bots: any = [];
+  filteredBots: any = [];
 
-  constructor(public af: AngularFire) {
+  constructor(public db: AngularFireDatabase) {
     const self = this;
 
-    const items = this.af.database.list(`/bots`, {preserveSnapshot: true});
+    const items = this.db.list(`/bots`, {preserveSnapshot: true});
     items.subscribe(snapshots => {
+      self.filteredBots = [];
       snapshots.forEach(snapshot => {
-        //console.log(snapshot);
         self.bots.push(snapshot);
+        self.filteredBots.push(snapshot);
       });
 
 
@@ -31,6 +33,26 @@ export class BotListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     delete this.bots;
+  }
+
+  search(filter) {
+
+    const val = filter.filter;
+
+    this.filteredBots = this.bots.filter(botRef => {
+      const bot = botRef.val();
+
+      console.log(bot);
+      let alias = -1;
+
+      if (bot.alias) {
+        alias = bot.alias.toLowerCase().indexOf(val.toLowerCase());
+
+      }
+
+
+      return (alias > -1 );
+    });
   }
 
 }

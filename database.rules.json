@@ -4,7 +4,13 @@
     ".write": "auth != null",
     "users": {
       ".indexOn": [
-        "lastMessage"
+        "lastMessage",
+        "deleted"
+      ]
+    },
+    "messages": {
+      ".indexOn": [
+        "category"
       ]
     }
   }

@@ -45,14 +45,14 @@
         <tbody>
         <tr class="" *ngFor="let message of messages| async">
           <td class="type">
-            <select name="type" [(ngModel)]="message.type">
+            <select name="type" #tp [(ngModel)]="message.type" (change)="updateType()" (change)="updateMessage(message)">
               <option *ngFor="let type of types" [value]="type.value">
                 {{type.display}}
               </option>
             </select>
           </td>
           <td class="category">
-            <select name="category" [(ngModel)]="message.category">
+            <select name="category" #ctgr [(ngModel)]="message.category" (change)="updateMessage(message)">
               <option *ngFor="let category of categories" [value]="category.value">
                 {{category.display}}
               </option>
@@ -60,8 +60,8 @@
           </td>
           <td class="message">
             <input type="text" #msg
-                   [value]="message.message"
-                   (blur)="updateMessage(message.$key, msg.value)"/>
+                   [(ngModel)]="message.message"
+                   (blur)="updateMessage(message)"/>
           </td>
         </tr>
 

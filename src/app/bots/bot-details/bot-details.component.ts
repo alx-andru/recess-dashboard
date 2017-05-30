@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import {AngularFire} from 'angularfire2';
 import {ActivatedRoute} from '@angular/router';
+import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database';
 
 @Component({
   selector: 'app-bot-details',
@@ -10,24 +10,41 @@ import {ActivatedRoute} from '@angular/router';
 export class BotDetailsComponent implements OnInit, OnDestroy {
 
   bot: any;
-  users: any;
+  botRef: FirebaseObjectObservable<any>;
+  // botConfigTemp: any;
+  // botConfig: FirebaseObjectObservable<any>;
+  users: FirebaseListObservable<any>;
 
   sub;
   @Output() isDetail = new EventEmitter();
 
-  constructor(private af: AngularFire, private route: ActivatedRoute) {
+  constructor(private db: AngularFireDatabase, private route: ActivatedRoute) {
+
+   // do nothing
+
   }
 
   ngOnInit() {
-
     this.sub = this.route.params.subscribe((params: { bid: string }) => {
       console.log(params.bid);
       if (params.bid !== 'none') {
         this.isDetail.emit(true);
-        this.bot = this.af.database.object(`/bots/${params.bid}`);
-        this.users = this.af.database.list(`/bots/${params.bid}/users`);
+
+        this.botRef = this.db.object(`/bots/${params.bid}`, {preserveSnapshot: true});
+        this.users = this.db.list(`/bots/${params.bid}/users`);
+        this.botRef.subscribe(snapshot => {
+          this.bot = snapshot.val();
+
+        });
+
       }
     });
+
+
+  }
+
+  updateConfig() {
+    this.botRef.set(this.bot);
   }
 
   ngOnDestroy() {

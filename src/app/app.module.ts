@@ -6,7 +6,10 @@ import {HttpModule} from '@angular/http';
 
 import {routing} from './app.routes';
 
-import {AngularFireModule, AuthMethods, AuthProviders} from 'angularfire2';
+import {AngularFireModule} from 'angularfire2';
+import {AngularFireAuthModule} from 'angularfire2/auth';
+import {AngularFireDatabaseModule} from 'angularfire2/database';
+
 import {AuthGuard} from './auth.guard';
 
 
@@ -27,24 +30,17 @@ import {UserListComponent} from './users/user-list/user-list.component';
 import {UserDetailsComponent} from './users/user-details/user-details.component';
 import {UserChatComponent} from './users/user-chat/user-chat.component';
 
-import {StepsComponent} from './ui/charts/steps/steps.component';
 
 import {MomentModule} from 'angular2-moment';
 import {AliasPipe} from './pipes/alias.pipe';
 import {ExportComponent} from './export/export.component';
 import {ButtonComponent} from './ui/button/button.component';
 import {environment} from '../environments/environment';
+import {BotMessagesComponent} from './bots/bot-messages/bot-messages.component';
+
 import {NgxChartsModule} from '@swimlane/ngx-charts';
-import { BotMessagesComponent } from './bots/bot-messages/bot-messages.component';
-
-
-const firebaseConfig = {
-  apiKey: environment.apiKey,
-  authDomain: environment.authDomain,
-  databaseURL: environment.databaseURL,
-  storageBucket: environment.storageBucket,
-  messagingSenderId: environment.messagingSenderId
-};
+import {FilterComponent} from './ui/filter/filter.component';
+import {StepsComponent} from './ui/charts/steps/steps.component';
 
 @NgModule({
   declarations: [
@@ -63,25 +59,26 @@ const firebaseConfig = {
     BotListComponent,
     BotDetailsComponent,
     UserChatComponent,
-    StepsComponent,
     AliasPipe,
     ExportComponent,
     ButtonComponent,
-    BotMessagesComponent
+    BotMessagesComponent,
+    FilterComponent,
+    StepsComponent
 
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    routing,
-    AngularFireModule.initializeApp(firebaseConfig, {
-      provider: AuthProviders.Google,
-      method: AuthMethods.Redirect
-    }),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFireDatabaseModule,
     MomentModule,
+    BrowserAnimationsModule,
+    routing,
     NgxChartsModule,
-    BrowserAnimationsModule
+
 
   ],
   providers: [

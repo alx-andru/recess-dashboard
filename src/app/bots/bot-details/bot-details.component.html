@@ -1,6 +1,18 @@
 <div class="details">
-
   <div class="wrap">
+    <div class="tile">
+      <header>
+        <i class="material-icons">description</i>
+        <span>Description</span>
+      </header>
+
+      <section class="details">
+        {{ bot?.description }}
+      </section>
+
+    </div>
+
+
     <div class="tile">
       <header>
         <i class="material-icons">android</i>
@@ -10,15 +22,45 @@
       <section class="details">
         <div class="detail">
           <div class="label">Created at</div>
-          <div class="value">{{(bot | async)?.timestamp | date:'medium'}}</div>
+          <div class="value">{{bot?.timestamp | date:'medium'}}</div>
         </div>
         <div class="detail">
           <div class="label">Alias</div>
-          <div class="value">{{(bot | async)?.alias }}</div>
+          <div class="value">{{bot?.alias }}</div>
         </div>
+        <br>
+
+        <header>
+          <i class="material-icons">timelapse</i>
+          <span>Message responsetimes</span>
+        </header>
+
+        <div class="detail">
+          <div class="label">Mean</div>
+          <div class="value">
+            <input type="number" [(ngModel)]="bot?.config.messages.responsetime.mean" (change)="updateConfig()" placeholder="0">
+
+          </div>
+        </div>
+
+        <div class="detail">
+          <div class="label">Standard Deviation</div>
+          <div class="value">
+            <input type="number" [(ngModel)]="bot?.config.messages.responsetime.standard_deviation" (change)="updateConfig()" placeholder="0">
+          </div>
+        </div>
+        <div class="detail">
+          <div class="label">Variance</div>
+          <div class="value">
+            <input type="number" [(ngModel)]="bot?.config.messages.responsetime.variance" (change)="updateConfig()" placeholder="0">
+          </div>
+        </div>
+
+
       </section>
 
     </div>
+
 
     <div class="tile">
 
@@ -28,7 +70,7 @@
       </header>
 
       <section class="details">
-        <div class="detail" *ngFor="let user of users | async" >
+        <div class="detail" *ngFor="let user of users | async">
           <div class="label" *ngIf="user.$key !== 'empty'">UserId</div>
           <div class="value" *ngIf="user.$key !== 'empty'">{{user.$key | alias }}</div>
         </div>

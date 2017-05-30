@@ -133,11 +133,40 @@
     height: 100%;
     width: 100%;
 
+    * {
+      cursor: pointer;
+
+    }
+
     .asAdmin {
-      padding: 0 2rem;
+      @include flex('row');
+      justify-content: flex-start;
+      align-items: center;
+
+      padding: 0.5rem 2rem;
       i {
-        font-size: 1rem;
+        font-size: 1.2rem;
+        padding: 0 0.5rem;
       }
+    }
+
+    .delete {
+      margin-top: 1rem;
+
+      @include flex('row');
+      justify-content: flex-start;
+      align-items: center;
+      padding: 0.5rem 2rem;
+      i {
+        font-size: 1.2rem;
+        padding: 0 0.5rem;
+      }
+
+      &.forever {
+        background-color: $recess_danger;
+        color: $white;
+      }
+
     }
 
     .category {

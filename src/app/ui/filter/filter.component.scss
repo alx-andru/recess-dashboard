@@ -1,0 +1,41 @@
+@import '../../../scss/colors';
+@import '../../../scss/mixins';
+
+.filter {
+  height: 4.2rem;
+  width: 100%;
+  padding: 0 0.25rem;
+  @include flex('row');
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
+
+
+  i {
+    background-color: $recess_base_1;
+    padding: 0.5rem 0 0.5rem 1rem;
+    font-size: 1.1rem;
+    color: $recess_font_base;
+    border-radius: 1rem 0 0 1rem;
+
+  }
+
+  input {
+    background-color: $recess_base_1;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0 1rem 1rem 0;
+    font-size: 0.9rem;
+
+    appearance: none;
+    width: 100%;
+    color: $primary_recess;
+  }
+
+  &.dark {
+    i, input {
+      background-color: $recess_base_contrast_1;
+
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 
-import {AngularFireAuth} from 'angularfire2';
+import {AngularFireAuth} from 'angularfire2/auth';
 
 
 @Component({

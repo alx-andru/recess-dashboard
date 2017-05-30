@@ -58,6 +58,7 @@
 
     </div>
 
+
     <div class="category">
       <i class="material-icons">android</i> Bots
     </div>
@@ -88,6 +89,16 @@
         {{user.alias}}
 
       </div>
+    </div>
+
+    <div class="delete" *ngIf="!showDelete" (click)="enableDelete()">
+      <i class="material-icons">delete</i>
+      Delete user
+    </div>
+
+    <div class="delete forever" *ngIf="showDelete" (click)="markAsDelete()">
+      <i class="material-icons">delete_forever</i>
+      Next click, user is gone!
     </div>
 
 

@@ -1,7 +1,6 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import * as moment from 'moment';
-import * as _ from 'underscore';
-import {AngularFire} from 'angularfire2';
+import {Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
+import {AngularFireDatabase, FirebaseListObservable} from 'angularfire2/database';
+
 
 @Component({
   selector: 'app-steps',
@@ -9,171 +8,20 @@ import {AngularFire} from 'angularfire2';
   styleUrls: ['./steps.component.scss']
 })
 export class StepsComponent implements OnInit, OnChanges {
-  options: any;
-  data: any;
-  type: any;
-
-  day: moment.Moment;
-  steps: any;
 
 
-  @Input() uid: string;
 
-  single: any[];
-
-
-  view: any[] = [300, 50];
-
-  // options
-  showXAxis = true;
-  showYAxis = true;
-  gradient = false;
-  showLegend = true;
-  showXAxisLabel = true;
-  xAxisLabel = 'Country';
-  showYAxisLabel = true;
-  yAxisLabel = 'Population';
-
-  colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-  };
+  constructor(private db: AngularFireDatabase) {
 
 
-  constructor(private af: AngularFire) {
-
-    this.data = {
-      labels: [],
-      series: []
-    };
-
-    this.single = [
-      {
-        name: 'adsf',
-        value: 8940000
-      },
-      {
-        name: 'usa',
-        value: 5000000
-      },
-      {
-        name: 'france',
-        value: 7200000
-      }
-    ];
-
-    this.options = {
-      axisX: {
-        divisor: 5,
-        labelInterpolationFnc: function (value) {
-          return moment(value).format('DD.MM.');
-        }
-      }
-    };
-
-    this.type = 'Bar';
   }
 
-  ngOnInit() {
-    this.day = moment();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-
-    if (changes['uid'] !== undefined) {
-      this.uid = changes['uid'].currentValue;
-      this.calculateSteps();
-    }
+  ngOnChanges(changes: SimpleChanges): void {
 
   }
 
 
-  onSelect(event) {
-    console.log(event);
-  }
-
-  calculateSteps() {
-    this.data = Object.assign({}, {
-      labels: [],
-      series: []
-    });
-
-    const sources = [];
-    let firstDay = moment();
-    const steps = this.af.database.list(`/user/${this.uid}/data/steps/`).subscribe(snapshots => {
-      this.steps = [];
-
-      snapshots.forEach(snapshot => {
-
-        const result = _.chain(snapshot)
-          .groupBy(function (value) {
-            return value.sourceName;
-          })
-          .map(function (value, key) {
-            const sum = _.reduce(value, function (memo, val) {
-
-              return memo + val.value;
-
-            }, 0);
-            const day = moment(snapshot.$key, 'YYYY-MM-DD');
-
-            // determine first day of collected data to start the chart from there
-            if (day.isBefore(firstDay)) {
-              firstDay = day;
-            }
-
-            return {source: key, steps: sum, day: day};
-          })
-          .value();
-
-        const source = result[0].source;
-        if (!_.find(sources, function (src) {
-            return src.source === source;
-          })) {
-          sources.push({source: source, id: sources.length});
-        }
-        this.steps.push(result[0]);
-
-      });
-
-      // now time to distribute to series
-      const grouped = _.groupBy(this.steps, function (step) {
-        return step.source;
-      });
-
-      // initialize labels based on first day
-
-      const daysCollected = moment().diff(firstDay, 'days');
-      this.data.labels = [];
-      for (let i = 0; i <= moment().diff(firstDay, 'days'); i++) {
-        const day = firstDay.clone().add(i, 'days');
-        this.data.labels.push(day);
-      }
-
-      // initialize sources
-      _.each(sources, src => {
-        this.data.series.push([]);
-      });
-
-      _.each(grouped, source => {
-        _.each(source, step => {
-          _.each(this.data.labels, (day: moment.Moment, idx) => {
-            if (day.isSame(step.day, 'day')) {
-              const sourceId = _.find(sources, src => {
-                return src.source === step.source;
-              });
-              this.data.series[sourceId.id][idx] = step.steps;
-            }
-          });
-
-        });
-      });
-
-
-      this.data = Object.assign({}, this.data);
-
-      console.log(this.data);
-
-    });
+  ngOnInit(): void {
   }
 
 }
