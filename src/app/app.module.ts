@@ -38,9 +38,9 @@ import {ButtonComponent} from './ui/button/button.component';
 import {environment} from '../environments/environment';
 import {BotMessagesComponent} from './bots/bot-messages/bot-messages.component';
 
-import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {FilterComponent} from './ui/filter/filter.component';
 import {StepsComponent} from './ui/charts/steps/steps.component';
+import { MapToIterablePipe } from './pipes/map-to-iterable.pipe';
 
 @NgModule({
   declarations: [
@@ -64,7 +64,8 @@ import {StepsComponent} from './ui/charts/steps/steps.component';
     ButtonComponent,
     BotMessagesComponent,
     FilterComponent,
-    StepsComponent
+    StepsComponent,
+    MapToIterablePipe
 
   ],
   imports: [
@@ -77,7 +78,6 @@ import {StepsComponent} from './ui/charts/steps/steps.component';
     MomentModule,
     BrowserAnimationsModule,
     routing,
-    NgxChartsModule,
 
 
   ],

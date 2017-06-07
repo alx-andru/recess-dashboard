@@ -137,10 +137,6 @@
     magic-string "^0.19.0"
     source-map "^0.5.6"
 
-"@swimlane/ngx-charts@^5.3.1":
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/@swimlane/ngx-charts/-/ngx-charts-5.3.1.tgz#942d95e8f11a3156b3f263783287d53eb648284c"
-
 "@types/chartist@^0.9.34":
   version "0.9.34"
   resolved "https://registry.yarnpkg.com/@types/chartist/-/chartist-0.9.34.tgz#2b2d6b6191f28d34d23b8054c748fcbfebc29e81"
@@ -158,6 +154,10 @@
 "@types/jasmine@2.5.38":
   version "2.5.38"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.38.tgz#a4379124c4921d4e21de54ec74669c9e9b356717"
+
+"@types/jquery@^2.0.45":
+  version "2.0.45"
+  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-2.0.45.tgz#cb99133aac1d997a820d6cf7258c91291c0a2adf"
 
 "@types/node@^6.0.46", "@types/node@~6.0.60":
   version "6.0.73"
@@ -2893,6 +2893,10 @@ joi@^6.10.1:
     moment "2.x.x"
     topo "1.x.x"
 
+jquery@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
+
 js-base64@^2.1.5, js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.1.9.tgz#f0e80ae039a4bd654b5f281fc93f04a914a7fcce"
@@ -3839,6 +3843,10 @@ pbkdf2@^3.0.3:
     ripemd160 "^2.0.1"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
+
+peity@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/peity/-/peity-3.2.1.tgz#5321b592ad7f15bbed1fafbd2b372f7553cb5fdd"
 
 performance-now@^0.2.0:
   version "0.2.0"

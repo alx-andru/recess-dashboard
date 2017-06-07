@@ -300,7 +300,22 @@ async function cleverReplies(uid: string, message: string) {
 }
 
 export let remove = functions.database.ref(`/users/{uid}/deleted`).onWrite(async event => {
-  console.log(event.data.val());
+  const deleted = event.data.val();
+
+  if (deleted) {
+    console.log(`User ${event.params.uid} marked as deleted.`);
+
+    admin.auth().deleteUser(event.params.uid).then(function () {
+      console.log(`User ${event.params.uid} deleted.`);
+
+    }).catch(function (error) {
+      console.log(`Error deleting user ${event.params.uid}`, error);
+
+    });
+
+  } else {
+    console.log(`User ${event.params.uid} marked as not deleted.`);
+  }
 
 });
 
@@ -444,13 +459,13 @@ async function engage(category: string) {
           const randomKey = messageKeys[randomNumber];
 
           /*
-            console.log('-----');
-            console.log(messageKeys);
-            console.log(randomNumber);
-            console.log(morningMessages);
-            console.log(randomKey);
-            console.log('+++++');
-          */
+           console.log('-----');
+           console.log(messageKeys);
+           console.log(randomNumber);
+           console.log(morningMessages);
+           console.log(randomKey);
+           console.log('+++++');
+           */
 
           const morningMessage = {
             text: morningMessages[randomKey].message,

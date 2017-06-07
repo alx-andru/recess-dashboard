@@ -12,10 +12,11 @@
 
       <section class="details">
 
-        <div *ngFor="let step of usersteps | async">
-          {{step.$key | amDateFormat:'DD.MM.'}} {{step.$value}}
+        <div class="detail detail-steps" *ngFor="let data of userdata | mapToIterable">
+          {{data.key | amDateFormat:'DD.MM.'}} {{data.value.steps}} {{data.value.activityTotal}}
         </div>
 
+        <span class="bar">5,3,9,6,5,9,7,3,5,2</span>
       </section>
 
     </div>
