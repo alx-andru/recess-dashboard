@@ -301,6 +301,7 @@ async function cleverReplies(uid: string, message: string) {
 
 export let remove = functions.database.ref(`/users/{uid}/deleted`).onWrite(async event => {
   const deleted = event.data.val();
+  console.log(deleted);
 
   if (deleted) {
     console.log(`User ${event.params.uid} marked as deleted.`);
@@ -443,12 +444,19 @@ async function engage(category: string) {
   let noMessagesYet = await noMessageYetRef.once('value');
   noMessagesYet = noMessagesYet.val();
 
+  console.log(`List of users(${Object.keys(noMessagesYet).length}) with no messages:`);
+  console.log(Object.keys(noMessagesYet));
+
+  if (null === noMessagesYet) {
+    console.log('cancel this morning hi');
+    return;
+  }
 
   const messageKeys = Object.keys(morningMessages);
 
-
   if (noMessagesYet) {
     Object.keys(noMessagesYet).forEach(key => {
+      console.log(`Sending a morning message to [${key}]`);
       const value = noMessagesYet[key];
 
       const chanceToSend = getRandomInt(0, 100);
@@ -479,12 +487,12 @@ async function engage(category: string) {
 
           queueMessage(value.uid, 0, morningMessage);
 
-          // mark user as last message send
-          admin.database().ref(`/users/${value.uid}/lastMessage`).set(moment().valueOf());
-
         }
 
       }
+
+      // mark user as last message send
+      admin.database().ref(`/users/${value.uid}/lastMessage`).set(moment().valueOf());
 
     });
 

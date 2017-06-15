@@ -86,9 +86,30 @@
 
       &-steps {
         backgorund-color: $recess_base_contrast_2;
+        @include flex('row');
+        align-items: center;
+        justify-content: flex-start;
+
+
+        .day {
+          //background-color: red;
+          width: 14rem;
+        }
+        .spark {
+          width: 100%;
+        }
+        .steps {
+          background-color: red;
+          width: 100%;
+        }
+
       }
 
+
     }
+
+
+
 
   }
 

@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import * as moment from 'moment';
 import {AngularFireDatabase} from 'angularfire2/database';
 import {AngularFireAuth} from 'angularfire2/auth';
@@ -30,7 +30,13 @@ export class UserChatComponent implements OnInit, OnChanges {
 
   constructor(private db: AngularFireDatabase, private af: AngularFireAuth, private router: Router) {
     this.bots = this.db.list(`/bots`);
-    this.users = this.db.list(`/users`);
+    this.users = this.db.list(`/users`, {
+      preserveSnapshot: false,
+      query: {
+        orderByChild: 'deleted',
+        equalTo: false,
+      }
+    });
 
     this.displayName = this.af.auth.currentUser.displayName;
     this.asAdmin = true;

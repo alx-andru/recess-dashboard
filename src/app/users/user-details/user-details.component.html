@@ -7,16 +7,18 @@
 
       <header>
         <i class="material-icons">timeline</i>
-        <span>User Steps</span>
+        <span>User Timeline</span>
       </header>
 
       <section class="details">
 
-        <div class="detail detail-steps" *ngFor="let data of userdata | mapToIterable">
-          {{data.key | amDateFormat:'DD.MM.'}} {{data.value.steps}} {{data.value.activityTotal}}
+        <div class="detail detail-steps" *ngFor="let data of userdata">
+          <div class="day">
+            {{data.day | amDateFormat: 'dd DD.MM.'}}
+          </div>
+          <app-steps class="steps" [chartid]="data.day" [data]="data.activity" class="spark"></app-steps>
         </div>
 
-        <span class="bar">5,3,9,6,5,9,7,3,5,2</span>
       </section>
 
     </div>

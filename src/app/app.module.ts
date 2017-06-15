@@ -41,6 +41,7 @@ import {BotMessagesComponent} from './bots/bot-messages/bot-messages.component';
 import {FilterComponent} from './ui/filter/filter.component';
 import {StepsComponent} from './ui/charts/steps/steps.component';
 import { MapToIterablePipe } from './pipes/map-to-iterable.pipe';
+import { GoogleChartDirective } from './ui/google-chart/google-chart.directive';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { MapToIterablePipe } from './pipes/map-to-iterable.pipe';
     BotMessagesComponent,
     FilterComponent,
     StepsComponent,
-    MapToIterablePipe
+    MapToIterablePipe,
+    GoogleChartDirective
 
   ],
   imports: [
@@ -78,8 +80,6 @@ import { MapToIterablePipe } from './pipes/map-to-iterable.pipe';
     MomentModule,
     BrowserAnimationsModule,
     routing,
-
-
   ],
   providers: [
     AuthGuard,

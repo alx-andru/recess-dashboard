@@ -2,7 +2,6 @@ import {AfterViewInit, Component, OnChanges, OnDestroy, OnInit, SimpleChanges} f
 import {ActivatedRoute} from '@angular/router';
 import * as moment from 'moment';
 import {AngularFireDatabase} from 'angularfire2/database';
-import * as jQuery from 'jquery';
 import 'peity';
 
 @Component({
@@ -19,12 +18,17 @@ export class UserDetailsComponent implements OnInit, OnDestroy, OnChanges, After
   today: any = moment();
   config: any;
 
-  userdata = {};
+  userdata = [];
+
   distance: any;
 
   isConversation: boolean;
 
   uid: any;
+
+
+  testingSomething = 'teste';
+  testingSomething2 = 'teste2';
 
   constructor(private db: AngularFireDatabase, private route: ActivatedRoute) {
     this.isConversation = true;
@@ -36,8 +40,6 @@ export class UserDetailsComponent implements OnInit, OnDestroy, OnChanges, After
 
   ngOnInit() {
 
-    console.log('test');
-
     this.sub = this.route.params.subscribe((params: { uid: string }) => {
       if (params.uid !== 'none' && params.uid !== this.uid) {
         this.uid = params.uid;
@@ -46,27 +48,37 @@ export class UserDetailsComponent implements OnInit, OnDestroy, OnChanges, After
         this.survey = this.db.object(`/user/${this.uid}/survey`);
 
         const stepsRef = this.db.list(`/user/${this.uid}/data/ui/user/steps`);
-        stepsRef.subscribe(snapshots => {
-          for (const snap of snapshots) {
-            console.log(snap);
-            if (undefined === this.userdata[snap.$key]) {
-              this.userdata[snap.$key] = {};
-            }
-            this.userdata[snap.$key].steps = snap.$value;
-          }
-        });
-
         const activityRef = this.db.list(`/user/${this.uid}/data/ui/user/activity`);
-        activityRef.subscribe(snapshots => {
-          for (const snap of snapshots) {
-            console.log(snap);
-            if (undefined === this.userdata[snap.$key]) {
-              this.userdata[snap.$key] = {};
+
+        stepsRef.subscribe(stepsSnapshots => {
+          this.userdata = [];
+          const usrData = {};
+
+          for (const snap of stepsSnapshots) {
+            // console.log(snap);
+            if (undefined === usrData[snap.$key]) {
+              usrData[snap.$key] = {};
             }
-            this.userdata[snap.$key].activityTotal = snap.totalHours;
+            usrData[snap.$key].steps = snap.$value;
           }
 
-          console.log(this.userdata);
+          activityRef.subscribe(activitySnapshots => {
+            for (const snap of activitySnapshots) {
+              console.log(snap);
+              if (undefined === usrData[snap.$key]) {
+                usrData[snap.$key] = {};
+              }
+              usrData[snap.$key].activityTotal = snap.totalHours || 0;
+              usrData[snap.$key].activity = snap.details || [];
+            }
+
+            this.userdata = Object.keys(usrData).map(p => Object.assign(usrData[p], {day: p}));
+
+            console.log(this.userdata);
+
+          });
+
+
         });
 
 
